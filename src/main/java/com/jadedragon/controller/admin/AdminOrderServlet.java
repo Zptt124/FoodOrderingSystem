@@ -27,8 +27,7 @@ public class AdminOrderServlet extends HttpServlet {
             int orderId = Integer.parseInt(request.getParameter("id"));
             Order order = orderDAO.findById(orderId);
             request.setAttribute("order", order);
-            request.setAttribute("orders", (statusFilter != null && !statusFilter.isEmpty())
-                    ? orderDAO.findByStatus(statusFilter) : orderDAO.findAll());
+            request.setAttribute("orders", orderDAO.findAll());
             request.setAttribute("currentFilter", statusFilter);
             RequestDispatcher rd = request.getRequestDispatcher("admin/orders.jsp");
             rd.forward(request, response);
@@ -46,20 +45,5 @@ public class AdminOrderServlet extends HttpServlet {
         request.setAttribute("currentFilter", statusFilter);
         RequestDispatcher rd = request.getRequestDispatcher("admin/orders.jsp");
         rd.forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-
-        String action = request.getParameter("action");
-        if ("updateStatus".equals(action)) {
-            int orderId = Integer.parseInt(request.getParameter("orderId"));
-            String newStatus = request.getParameter("newStatus");
-            new OrderDAO().updateStatus(orderId, newStatus);
-        }
-
-        response.sendRedirect("AdminOrderServlet");
     }
 }

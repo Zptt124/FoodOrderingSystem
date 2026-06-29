@@ -33,14 +33,6 @@
                         </div>
                     </c:if>
 
-                    <!-- Demo credentials info -->
-                    <div class="alert alert-info d-flex align-items-center" role="alert">
-                        <i class="bi bi-info-circle-fill me-2 flex-shrink-0"></i>
-                        <div style="font-size:0.85rem;">
-                            <strong>Demo:</strong> <code>admin</code> / <code>admin123</code> or <code>customer1</code> / <code>admin123</code>
-                        </div>
-                    </div>
-
                     <form action="LoginServlet" method="post">
                         <c:if test="${not empty param.redirect}">
                             <input type="hidden" name="redirect" value="${param.redirect}">

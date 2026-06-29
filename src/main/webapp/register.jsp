@@ -74,10 +74,6 @@
                             <input type="password" name="password" id="password" class="form-control"
                                    required minlength="6" placeholder="At least 6 characters">
                             <div class="invalid-feedback">Password must be at least 6 characters.</div>
-                            <div class="password-strength">
-                                <div class="password-strength-bar" id="passwordStrengthBar"></div>
-                            </div>
-                            <small class="strength-text" id="passwordStrengthText"></small>
                         </div>
 
                         <!-- Confirm Password -->
@@ -104,38 +100,6 @@
         </div>
     </div>
 </div>
-
-<!-- Password strength live indicator script -->
-<script>
-(function() {
-    var pw = document.getElementById('password');
-    var bar = document.getElementById('passwordStrengthBar');
-    var text = document.getElementById('passwordStrengthText');
-    if (!pw || !bar || !text) return;
-
-    pw.addEventListener('input', function() {
-        var val = this.value;
-        var score = 0;
-        if (val.length >= 6) score++;
-        if (val.length >= 8) score++;
-        if (/[A-Z]/.test(val)) score++;
-        if (/[0-9]/.test(val)) score++;
-        if (/[^A-Za-z0-9]/.test(val)) score++;
-
-        var levels = [
-            { cls: 'strength-weak', label: 'Weak', color: '#C41E3A' },
-            { cls: 'strength-fair', label: 'Fair', color: '#E67E22' },
-            { cls: 'strength-good', label: 'Good', color: '#D4A843' },
-            { cls: 'strength-strong', label: 'Strong', color: '#28A745' },
-            { cls: 'strength-strong', label: 'Strong', color: '#28A745' }
-        ];
-        var idx = Math.min(score, 4);
-        bar.className = 'password-strength-bar ' + levels[idx].cls;
-        text.textContent = 'Strength: ' + levels[idx].label;
-        text.style.color = levels[idx].color;
-    });
-})();
-</script>
 
 <script src="js/validation.js"></script>
 <%@ include file="footer.jsp" %>

@@ -80,32 +80,6 @@ CREATE TABLE IF NOT EXISTS order_items (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================
--- 6. Reviews Table
--- ============================================
-CREATE TABLE IF NOT EXISTS reviews (
-    review_id     INT AUTO_INCREMENT PRIMARY KEY,
-    user_id       INT NOT NULL,
-    food_id       INT NOT NULL,
-    rating        INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
-    comment       TEXT,
-    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (food_id) REFERENCES food_items(food_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- ============================================
--- 7. Contact Messages Table
--- ============================================
-CREATE TABLE IF NOT EXISTS contact_messages (
-    message_id    INT AUTO_INCREMENT PRIMARY KEY,
-    name          VARCHAR(100) NOT NULL,
-    email         VARCHAR(100) NOT NULL,
-    subject       VARCHAR(200),
-    message       TEXT NOT NULL,
-    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- ============================================
 -- Seed Data: Categories
 -- ============================================
 INSERT INTO categories (category_id, name, description, image_url) VALUES

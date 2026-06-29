@@ -239,29 +239,4 @@
     </div>
 </section>
 
-<!-- ============================================
-     Promo Banner
-     ============================================ -->
-<section class="section-sm">
-    <div class="container">
-        <div class="promo-banner">
-            <div class="row align-items-center">
-                <div class="col-lg-8 text-lg-start text-center mb-3 mb-lg-0">
-                    <h3 style="font-size: 1.6rem;">
-                        <i class="bi bi-tag-fill me-2"></i>Today's Special
-                    </h3>
-                    <p style="font-size: 1.1rem; margin-bottom: 0;">
-                        20% off on all Chef's Special dishes! Use code <strong style="background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: var(--radius-full);">CHEF20</strong> at checkout.
-                    </p>
-                </div>
-                <div class="col-lg-4 text-lg-end text-center">
-                    <a href="MenuServlet" class="btn btn-gold btn-lg">
-                        Order Now <i class="bi bi-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 <%@ include file="footer.jsp" %>

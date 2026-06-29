@@ -176,22 +176,6 @@ public class FoodDAO {
         return 0;
     }
 
-    public void updateRating(int foodId) {
-        String sql = "UPDATE food_items SET rating = " +
-                     "(SELECT COALESCE(AVG(rating), 0) FROM reviews WHERE food_id = ?), " +
-                     "review_count = (SELECT COUNT(*) FROM reviews WHERE food_id = ?) " +
-                     "WHERE food_id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, foodId);
-            ps.setInt(2, foodId);
-            ps.setInt(3, foodId);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void setParams(PreparedStatement ps, FoodItem item) throws SQLException {
         ps.setString(1, item.getName());
         ps.setString(2, item.getDescription());

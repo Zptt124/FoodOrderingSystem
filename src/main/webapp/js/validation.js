@@ -33,40 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
             confirmInput.addEventListener('input', checkPasswordMatch);
         }
 
-        // Password strength indicator with colored bar
-        if (passwordInput) {
-            const strengthBar = document.getElementById('passwordStrengthBar');
-            const strengthText = document.getElementById('passwordStrengthText');
-
-            passwordInput.addEventListener('input', function () {
-                const val = this.value;
-                let score = 0;
-                if (val.length >= 6) score++;
-                if (val.length >= 8) score++;
-                if (/[A-Z]/.test(val)) score++;
-                if (/[0-9]/.test(val)) score++;
-                if (/[^A-Za-z0-9]/.test(val)) score++;
-
-                const levels = [
-                    { cls: 'strength-weak',   label: 'Weak',   color: '#DC3545' },
-                    { cls: 'strength-fair',   label: 'Fair',   color: '#FFC107' },
-                    { cls: 'strength-good',   label: 'Good',   color: '#17A2B8' },
-                    { cls: 'strength-strong', label: 'Strong', color: '#28A745' },
-                    { cls: 'strength-strong', label: 'Very Strong', color: '#20C997' }
-                ];
-                const idx = Math.min(score, 4);
-                const level = levels[idx];
-
-                if (strengthBar) {
-                    strengthBar.className = 'password-strength-bar ' + level.cls;
-                }
-                if (strengthText) {
-                    strengthText.textContent = 'Strength: ' + level.label;
-                    strengthText.style.color = level.color;
-                }
-            });
-        }
-
         // Username blur validation
         if (usernameInput) {
             usernameInput.addEventListener('blur', function () {

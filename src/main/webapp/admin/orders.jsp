@@ -93,24 +93,7 @@
                         </table>
                     </div>
                     <p class="mt-3 mb-1"><strong>Notes:</strong> ${empty order.notes ? 'None' : order.notes}</p>
-                    <p class="mb-3"><small class="text-muted">Ordered: <fmt:formatDate value="${order.orderDate}" pattern="yyyy-MM-dd HH:mm:ss"/></small></p>
-
-                    <!-- Update Status -->
-                    <form method="post" action="${pageContext.request.contextPath}/AdminOrderServlet" class="mt-2">
-                        <input type="hidden" name="action" value="updateStatus">
-                        <input type="hidden" name="orderId" value="${order.orderId}">
-                        <div class="input-group" style="max-width: 350px;">
-                            <select name="newStatus" class="form-select form-select-sm">
-                                <option value="pending" ${order.status eq 'pending' ? 'selected' : ''}>Pending</option>
-                                <option value="confirmed" ${order.status eq 'confirmed' ? 'selected' : ''}>Confirmed</option>
-                                <option value="preparing" ${order.status eq 'preparing' ? 'selected' : ''}>Preparing</option>
-                                <option value="ready" ${order.status eq 'ready' ? 'selected' : ''}>Ready</option>
-                                <option value="completed" ${order.status eq 'completed' ? 'selected' : ''}>Completed</option>
-                                <option value="cancelled" ${order.status eq 'cancelled' ? 'selected' : ''}>Cancelled</option>
-                            </select>
-                            <button type="submit" class="btn btn-gold btn-sm">Update</button>
-                        </div>
-                    </form>
+                    <p><small class="text-muted">Ordered: <fmt:formatDate value="${order.orderDate}" pattern="yyyy-MM-dd HH:mm:ss"/></small></p>
                 </div>
             </div>
         </c:if>

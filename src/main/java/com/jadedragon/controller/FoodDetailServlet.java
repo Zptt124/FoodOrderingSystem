@@ -1,7 +1,6 @@
 package com.jadedragon.controller;
 
 import com.jadedragon.dao.FoodDAO;
-import com.jadedragon.dao.ReviewDAO;
 import com.jadedragon.model.FoodItem;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -22,23 +21,20 @@ public class FoodDetailServlet extends HttpServlet {
         try {
             String idParam = request.getParameter("id");
             if (idParam == null || idParam.isEmpty()) {
-                response.sendRedirect("menu.jsp");
+                response.sendRedirect("MenuServlet");
                 return;
             }
 
             int foodId = Integer.parseInt(idParam);
             FoodDAO foodDAO = new FoodDAO();
-            ReviewDAO reviewDAO = new ReviewDAO();
-
             FoodItem item = foodDAO.findById(foodId);
+
             if (item == null) {
-                response.sendRedirect("menu.jsp");
+                response.sendRedirect("MenuServlet");
                 return;
             }
 
             request.setAttribute("food", item);
-            request.setAttribute("reviews", reviewDAO.findByFoodId(foodId));
-
             RequestDispatcher rd = request.getRequestDispatcher("food-detail.jsp");
             rd.forward(request, response);
         } catch (Exception e) {

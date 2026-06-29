@@ -1,7 +1,6 @@
 package com.jadedragon.controller;
 
 import com.jadedragon.dao.OrderDAO;
-import com.jadedragon.dao.ReviewDAO;
 import com.jadedragon.model.*;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -29,23 +28,12 @@ public class OrderServlet extends HttpServlet {
             return;
         }
 
-        String action = request.getParameter("action");
         User user = (User) session.getAttribute("user");
         OrderDAO orderDAO = new OrderDAO();
-
-        if ("detail".equals(action)) {
-            int orderId = Integer.parseInt(request.getParameter("orderId"));
-            Order order = orderDAO.findById(orderId);
-            request.setAttribute("order", order);
-            RequestDispatcher rd = request.getRequestDispatcher("order-detail.jsp");
-            rd.forward(request, response);
-        } else {
-            // Show my orders
-            List<Order> orders = orderDAO.findByUserId(user.getUserId());
-            request.setAttribute("orders", orders);
-            RequestDispatcher rd = request.getRequestDispatcher("my-orders.jsp");
-            rd.forward(request, response);
-        }
+        List<Order> orders = orderDAO.findByUserId(user.getUserId());
+        request.setAttribute("orders", orders);
+        RequestDispatcher rd = request.getRequestDispatcher("my-orders.jsp");
+        rd.forward(request, response);
     }
 
     @Override
@@ -61,8 +49,6 @@ public class OrderServlet extends HttpServlet {
         String action = request.getParameter("action");
         if ("checkout".equals(action)) {
             handleCheckout(request, response, session);
-        } else if ("review".equals(action)) {
-            handleReview(request, response, session);
         }
     }
 
@@ -109,27 +95,6 @@ public class OrderServlet extends HttpServlet {
             request.setAttribute("error", "Order failed. Please try again.");
             RequestDispatcher rd = request.getRequestDispatcher("cart.jsp");
             rd.forward(request, response);
-        }
-    }
-
-    private void handleReview(HttpServletRequest request, HttpServletResponse response, HttpSession session)
-            throws IOException {
-        User user = (User) session.getAttribute("user");
-        int foodId = Integer.parseInt(request.getParameter("foodId"));
-        int rating = Integer.parseInt(request.getParameter("rating"));
-        String comment = request.getParameter("comment");
-
-        Review review = new Review();
-        review.setUserId(user.getUserId());
-        review.setFoodId(foodId);
-        review.setRating(rating);
-        review.setComment(comment != null ? comment : "");
-
-        ReviewDAO reviewDAO = new ReviewDAO();
-        if (reviewDAO.add(review)) {
-            response.sendRedirect("FoodDetailServlet?id=" + foodId + "&reviewed=1");
-        } else {
-            response.sendRedirect("FoodDetailServlet?id=" + foodId + "&error=review");
         }
     }
 }
