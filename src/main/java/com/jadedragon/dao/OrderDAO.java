@@ -25,7 +25,6 @@ public class OrderDAO {
             conn = DBConnection.getConnection();
             conn.setAutoCommit(false);
 
-            // Insert order
             String sqlOrder = "INSERT INTO orders (user_id, total_price, status, notes) VALUES (?, ?, 'pending', ?)";
             psOrder = conn.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
             psOrder.setInt(1, userId);
@@ -40,7 +39,6 @@ public class OrderDAO {
             }
             int orderId = rs.getInt(1);
 
-            // Insert order items
             String sqlItem = "INSERT INTO order_items (order_id, food_id, quantity, add_ons, unit_price) VALUES (?, ?, ?, ?, ?)";
             psItem = conn.prepareStatement(sqlItem);
             for (OrderItem item : items) {
@@ -183,7 +181,7 @@ public class OrderDAO {
 
     private List<OrderItem> findOrderItems(int orderId) {
         List<OrderItem> items = new ArrayList<>();
-        String sql = "SELECT oi.*, f.name AS food_name, f.name_cn AS food_name_cn " +
+        String sql = "SELECT oi.*, f.name AS food_name " +
                      "FROM order_items oi JOIN food_items f ON oi.food_id = f.food_id WHERE oi.order_id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -220,7 +218,6 @@ public class OrderDAO {
         oi.setAddOns(rs.getString("add_ons"));
         oi.setUnitPrice(rs.getBigDecimal("unit_price"));
         try { oi.setFoodName(rs.getString("food_name")); } catch (SQLException ignored) {}
-        try { oi.setFoodNameCn(rs.getString("food_name_cn")); } catch (SQLException ignored) {}
         oi.setSubtotal(oi.getUnitPrice().multiply(BigDecimal.valueOf(oi.getQuantity())));
         return oi;
     }

@@ -34,15 +34,15 @@ public class Order implements Serializable {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    public String getStatusCn() {
-        if (status == null) return "未知";
+    public String getStatusLabel() {
+        if (status == null) return "Unknown";
         switch (status) {
-            case "pending":    return "待处理";
-            case "confirmed":  return "已确认";
-            case "preparing":  return "准备中";
-            case "ready":      return "待取餐";
-            case "completed":  return "已完成";
-            case "cancelled":  return "已取消";
+            case "pending":    return "Pending";
+            case "confirmed":  return "Confirmed";
+            case "preparing":  return "Preparing";
+            case "ready":      return "Ready";
+            case "completed":  return "Completed";
+            case "cancelled":  return "Cancelled";
             default:           return status;
         }
     }

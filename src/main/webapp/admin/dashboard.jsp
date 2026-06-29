@@ -2,109 +2,141 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%
-    com.jadedragon.model.User user = (com.jadedragon.model.User) session.getAttribute("user");
-    if (user == null || !user.isAdmin()) { response.sendRedirect("../login.jsp"); return; }
+    com.jadedragon.model.User sessionUser = (com.jadedragon.model.User) session.getAttribute("user");
+    if (sessionUser == null || !sessionUser.isAdmin()) { response.sendRedirect("../login.jsp"); return; }
 %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Jade Dragon</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="../css/style.css" rel="stylesheet">
-</head>
-<body>
-<nav class="navbar navbar-dark" style="background: #1A1A2E; border-bottom: 2px solid #D4A843;">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="../home.jsp">
-            <span style="font-family: 'Noto Serif SC'; color: #D4A843; font-weight: 700;">🐉 玉龙 Admin</span>
-        </a>
-        <div class="d-flex align-items-center">
-            <span style="color: #FFF8E7; margin-right: 15px;">Admin: <%= user.getUsername() %></span>
-            <a href="dashboard.jsp" class="btn btn-sm" style="background: #D4A843; color: #1A1A2E; margin-right: 5px;">
-                <i class="bi bi-speedometer2"></i> Dashboard
+<%@ include file="../header.jsp" %>
+
+<div class="admin-layout">
+    <!-- Admin Sidebar -->
+    <div class="admin-sidebar">
+        <div class="px-3 mb-4">
+            <h5 class="text-white mb-0" style="font-family: var(--font-heading);">
+                <i class="bi bi-speedometer2" style="color: var(--gold);"></i> Admin Panel
+            </h5>
+        </div>
+        <nav class="d-flex flex-column">
+            <a href="${pageContext.request.contextPath}/AdminServlet" class="nav-link active">
+                <i class="bi bi-house-door"></i> Dashboard
             </a>
-            <a href="menu-items.jsp" class="btn btn-sm btn-outline-light" style="margin-right: 5px;">Menu</a>
-            <a href="categories.jsp" class="btn btn-sm btn-outline-light" style="margin-right: 5px;">Categories</a>
-            <a href="orders.jsp" class="btn btn-sm btn-outline-light" style="margin-right: 5px;">Orders</a>
-            <a href="../LogoutServlet" class="btn btn-sm btn-outline-light">Logout</a>
-        </div>
-    </div>
-</nav>
-
-<div class="container-fluid" style="background: #FFF8E7; min-height: 90vh; padding: 30px;">
-    <h3 style="color: #1A1A2E; margin-bottom: 25px;">
-        Dashboard <span style="font-family: 'Noto Serif SC'; color: #C41E3A;">管理仪表盘</span>
-    </h3>
-
-    <!-- Stats Cards -->
-    <div class="row mb-4">
-        <div class="col-md-3 mb-3">
-            <div class="card text-center" style="border-left: 4px solid #C41E3A;">
-                <div class="card-body">
-                    <h1 style="color: #C41E3A; font-weight: 700;">${totalOrders}</h1>
-                    <p style="opacity: 0.7;">Total Orders 总订单</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card text-center" style="border-left: 4px solid #D4A843;">
-                <div class="card-body">
-                    <h1 style="color: #D4A843; font-weight: 700;">RM <fmt:formatNumber value="${totalRevenue}" pattern="#,###"/></h1>
-                    <p style="opacity: 0.7;">Total Revenue 总营收</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card text-center" style="border-left: 4px solid #2ECC71;">
-                <div class="card-body">
-                    <h1 style="color: #2ECC71; font-weight: 700;">${totalFoodItems}</h1>
-                    <p style="opacity: 0.7;">Menu Items 菜品数</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card text-center" style="border-left: 4px solid #3498DB;">
-                <div class="card-body">
-                    <h1 style="color: #3498DB; font-weight: 700;">${totalCustomers}</h1>
-                    <p style="opacity: 0.7;">Customers 客户数</p>
-                </div>
-            </div>
-        </div>
+            <a href="${pageContext.request.contextPath}/AdminMenuServlet" class="nav-link">
+                <i class="bi bi-egg-fried"></i> Menu Items
+            </a>
+            <a href="${pageContext.request.contextPath}/AdminCategoryServlet" class="nav-link">
+                <i class="bi bi-folder"></i> Categories
+            </a>
+            <a href="${pageContext.request.contextPath}/AdminOrderServlet" class="nav-link">
+                <i class="bi bi-cart-check"></i> Orders
+            </a>
+        </nav>
     </div>
 
-    <!-- Recent Pending Orders -->
-    <div class="card">
-        <div class="card-header" style="background: #1A1A2E; color: #D4A843;">
-            <strong>Recent Pending Orders 待处理订单</strong>
+    <!-- Admin Main Content -->
+    <div class="admin-main">
+        <h3 class="mb-4" style="font-family: var(--font-heading);">Dashboard</h3>
+
+        <!-- Stat Cards -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stat-card">
+                    <div class="stat-icon red">
+                        <i class="bi bi-cart-check"></i>
+                    </div>
+                    <div>
+                        <h3>${not empty orderCount ? orderCount : 0}</h3>
+                        <p>Total Orders</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stat-card">
+                    <div class="stat-icon gold">
+                        <i class="bi bi-currency-dollar"></i>
+                    </div>
+                    <div>
+                        <h3>
+                            <c:choose>
+                                <c:when test="${not empty revenue}">
+                                    RM <fmt:formatNumber value="${revenue}" pattern="#,##0.00"/>
+                                </c:when>
+                                <c:otherwise>RM 0.00</c:otherwise>
+                            </c:choose>
+                        </h3>
+                        <p>Total Revenue</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="bi bi-egg-fried"></i>
+                    </div>
+                    <div>
+                        <h3>${not empty foodCount ? foodCount : 0}</h3>
+                        <p>Total Menu Items</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <div>
+                        <h3>${not empty customerCount ? customerCount : 0}</h3>
+                        <p>Total Customers</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <c:choose>
-                <c:when test="${not empty recentOrders}">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Date</th><th>Status</th></tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="o" items="${recentOrders}">
-                                <tr>
-                                    <td>#${o.orderId}</td>
-                                    <td>${o.username}</td>
-                                    <td>RM <fmt:formatNumber value="${o.totalPrice}" pattern="#0.00"/></td>
-                                    <td><small><fmt:formatDate value="${o.orderDate}" pattern="MM/dd HH:mm"/></small></td>
-                                    <td><span class="badge" style="background: #D4A843; color: #1A1A2E;">${o.statusCn}</span></td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </c:when>
-                <c:otherwise>
-                    <p class="text-center py-3" style="opacity: 0.6;">No pending orders. Database connection required.</p>
-                </c:otherwise>
-            </c:choose>
+
+        <!-- Recent Pending Orders -->
+        <div class="card" style="border: none; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+            <div class="card-header" style="background: var(--dark); color: var(--white); border-radius: var(--radius-md) var(--radius-md) 0 0;">
+                <strong><i class="bi bi-clock-history"></i> Recent Pending Orders</strong>
+            </div>
+            <div class="card-body p-0">
+                <c:choose>
+                    <c:when test="${not empty pendingOrders}">
+                        <div class="table-responsive">
+                            <table class="admin-table table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Total</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="o" items="${pendingOrders}">
+                                        <tr>
+                                            <td><strong>#${o.orderId}</strong></td>
+                                            <td>${o.username}</td>
+                                            <td>RM <fmt:formatNumber value="${o.totalPrice}" pattern="#0.00"/></td>
+                                            <td><small><fmt:formatDate value="${o.orderDate}" pattern="MM/dd HH:mm"/></small></td>
+                                            <td><span class="status-badge status-${o.status}">${o.statusLabel}</span></td>
+                                            <td>
+                                                <a href="${pageContext.request.contextPath}/AdminOrderServlet?action=detail&id=${o.orderId}" class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-eye"></i> View
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="text-center py-4">
+                            <i class="bi bi-check-circle" style="font-size: 2rem; color: var(--gray-300);"></i>
+                            <p class="text-muted mt-2 mb-0">No pending orders</p>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </div>
         </div>
     </div>
 </div>

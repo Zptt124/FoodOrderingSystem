@@ -8,7 +8,6 @@ public class FoodItem implements Serializable {
 
     private int foodId;
     private String name;
-    private String nameCn;
     private String description;
     private String ingredients;
     private String nutritionalInfo;
@@ -16,7 +15,6 @@ public class FoodItem implements Serializable {
     private String imageUrl;
     private int categoryId;
     private String categoryName;    // joined from categories table
-    private String categoryNameCn;  // joined from categories table
     private double rating;
     private int reviewCount;
     private boolean isFeatured;
@@ -30,9 +28,6 @@ public class FoodItem implements Serializable {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-
-    public String getNameCn() { return nameCn; }
-    public void setNameCn(String nameCn) { this.nameCn = nameCn; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
@@ -54,9 +49,6 @@ public class FoodItem implements Serializable {
 
     public String getCategoryName() { return categoryName; }
     public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
-
-    public String getCategoryNameCn() { return categoryNameCn; }
-    public void setCategoryNameCn(String categoryNameCn) { this.categoryNameCn = categoryNameCn; }
 
     public double getRating() { return rating; }
     public void setRating(double rating) { this.rating = rating; }

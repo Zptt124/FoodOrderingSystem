@@ -1,78 +1,153 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="header.jsp" %>
 
-<!-- Hero -->
-<section style="background: linear-gradient(rgba(26,26,46,0.88), rgba(45,27,46,0.88)),
-                url('https://images.unsplash.com/photo-1552566626-52f8b828add9?w=1920');
-                background-size: cover; background-position: center; padding: 80px 0;
-                text-align: center; color: #FFF8E7;">
+<!-- Page Header -->
+<section class="page-header">
     <div class="container">
-        <h1 style="font-family: 'Noto Serif SC'; font-size: 3rem; color: #D4A843;">关于我们 About Us</h1>
-        <p style="font-size: 1.2rem;">The Story of Jade Dragon 玉龙的故事</p>
+        <h1>About Jade Dragon</h1>
+        <p>Our Story</p>
     </div>
 </section>
 
-<!-- Story -->
-<section style="background: #FFF8E7; padding: 60px 0;">
-<div class="container">
-    <div class="row align-items-center">
-        <div class="col-lg-6 mb-4">
-            <h2 style="font-family: 'Noto Serif SC'; color: #C41E3A;">传承经典，品味中华</h2>
-            <h3 style="color: #1A1A2E;">Authentic Flavors Since 1998</h3>
-            <p style="line-height: 1.8; margin: 20px 0;">
-                Jade Dragon was born from a simple belief: that great Chinese food is about more than just
-                ingredients — it's about tradition, craft, and the joy of sharing a meal with loved ones.
-            </p>
-            <p style="line-height: 1.8;">
-                Our master chefs bring decades of experience from the finest kitchens across China —
-                from the fiery woks of Sichuan to the delicate dim sum masters of Guangzhou.
-                Every dish we serve carries the soul of its origin, prepared with the freshest
-                ingredients and authentic techniques.
-            </p>
-            <blockquote style="border-left: 4px solid #C41E3A; padding: 15px 20px; background: #FFF; margin: 20px 0;">
-                <i>"Food is the foundation of the people. To eat well is to live well."</i><br>
-                <small style="font-family: 'Noto Serif SC';">— 民以食为天</small>
-            </blockquote>
-        </div>
-        <div class="col-lg-6 text-center">
-            <div style="background: linear-gradient(135deg, #C41E3A, #8B1A2B); border-radius: 16px;
-                        padding: 80px 40px; color: white;">
-                <span style="font-size: 6rem;">🐉</span>
-                <h3 style="font-family: 'Noto Serif SC';">玉龙中餐馆</h3>
-                <p>Est. 1998 · Kuala Lumpur</p>
+<!-- Our Story -->
+<section class="section">
+    <div class="container">
+        <div class="about-story animate-in">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="section-title text-start mb-4">
+                        <span class="subtitle">Since 1998</span>
+                        <h2>A Legacy of Flavor</h2>
+                        <span class="divider"></span>
+                    </div>
+                    <p class="mb-3" style="font-size: 1.05rem; line-height: 1.8;">
+                        Since 1998, Jade Dragon has been serving authentic Chinese cuisine in the heart of
+                        Kuala Lumpur. What began as a small family-run kitchen has grown into one of the
+                        city's most beloved dining destinations.
+                    </p>
+                    <p style="font-size: 1.05rem; line-height: 1.8;">
+                        Our master chefs bring decades of experience from China's finest kitchens, crafting
+                        each dish with time-honored techniques and the freshest ingredients. Every plate that
+                        leaves our kitchen carries the soul of its origin and our passion for excellence.
+                    </p>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <div style="background: linear-gradient(135deg, var(--red), var(--red-dark));
+                                border-radius: var(--radius-md); padding: 80px 40px; color: var(--white);">
+                        <span style="font-size: 5rem;">&#x1F409;</span>
+                        <h3 class="mt-3 mb-2" style="color: var(--white); font-family: var(--font-heading);">Jade Dragon</h3>
+                        <p class="mb-0" style="opacity: 0.85;">Est. 1998 &middot; Kuala Lumpur</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </section>
 
-<!-- Chef Profiles -->
-<section style="background: #1A1A2E; padding: 60px 0; color: #FFF8E7;">
+<!-- Our Chefs -->
+<section style="background: var(--dark); padding: 80px 0;">
     <div class="container">
-        <h2 class="text-center mb-4" style="color: #D4A843;">
-            Our Chefs <span style="font-family: 'Noto Serif SC';">主厨团队</span>
-        </h2>
+        <div class="section-title mb-5">
+            <span class="subtitle" style="color: var(--gold-light);">Meet The Team</span>
+            <h2 style="color: var(--white);">Our Chefs</h2>
+            <span class="divider"></span>
+        </div>
         <div class="row">
-            <div class="col-lg-4 text-center mb-4">
-                <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #D4A843, #8B7318);
-                            border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center;
-                            justify-content: center; font-size: 3rem;">👨‍🍳</div>
-                <h5>Chef Wang 王师傅</h5>
-                <p style="opacity: 0.8;">Executive Chef · Sichuan Specialty<br>Executive Chef 执行主厨</p>
+            <div class="col-lg-4 mb-4">
+                <div class="chef-card">
+                    <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=300&h=300&fit=crop"
+                         alt="Chef Wei Zhang" class="chef-img">
+                    <h4>Chef Wei Zhang</h4>
+                    <p class="mb-1" style="color: var(--red); font-weight: 600;">Executive Chef</p>
+                    <p class="mb-1" style="color: var(--gray-500); font-size: 0.9rem;">25 years of experience</p>
+                    <p style="color: var(--gray-500); font-size: 0.9rem;">Specialty: Cantonese Cuisine</p>
+                </div>
             </div>
-            <div class="col-lg-4 text-center mb-4">
-                <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #D4A843, #8B7318);
-                            border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center;
-                            justify-content: center; font-size: 3rem;">👩‍🍳</div>
-                <h5>Chef Li 李师傅</h5>
-                <p style="opacity: 0.8;">Dim Sum Master · Cantonese Cuisine<br>点心大师 粤菜专家</p>
+            <div class="col-lg-4 mb-4">
+                <div class="chef-card">
+                    <img src="https://images.unsplash.com/photo-1583394293214-28ded15ee548?w=300&h=300&fit=crop"
+                         alt="Chef Lin Chen" class="chef-img">
+                    <h4>Chef Lin Chen</h4>
+                    <p class="mb-1" style="color: var(--red); font-weight: 600;">Dim Sum Master</p>
+                    <p class="mb-1" style="color: var(--gray-500); font-size: 0.9rem;">18 years of experience</p>
+                    <p style="color: var(--gray-500); font-size: 0.9rem;">Specialty: Dim Sum & Pastry</p>
+                </div>
             </div>
-            <div class="col-lg-4 text-center mb-4">
-                <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #D4A843, #8B7318);
-                            border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center;
-                            justify-content: center; font-size: 3rem;">👨‍🍳</div>
-                <h5>Chef Zhang 张师傅</h5>
-                <p style="opacity: 0.8;">Pastry Chef · Dessert Artist<br>甜品主厨 点心艺术</p>
+            <div class="col-lg-4 mb-4">
+                <div class="chef-card">
+                    <img src="https://images.pexels.com/photos/3814446/pexels-photo-3814446.jpeg?w=300&h=300&fit=crop"
+                         alt="Chef Mei Wong" class="chef-img">
+                    <h4>Chef Mei Wong</h4>
+                    <p class="mb-1" style="color: var(--red); font-weight: 600;">Sous Chef</p>
+                    <p class="mb-1" style="color: var(--gray-500); font-size: 0.9rem;">15 years of experience</p>
+                    <p style="color: var(--gray-500); font-size: 0.9rem;">Specialty: Sichuan Cuisine</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Values -->
+<section class="section">
+    <div class="container">
+        <div class="section-title mb-5">
+            <span class="subtitle">What We Stand For</span>
+            <h2>Our Values</h2>
+            <span class="divider"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="chef-card h-100">
+                    <div style="width: 72px; height: 72px; background: linear-gradient(135deg, var(--red), var(--red-light));
+                                border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;
+                                font-size: 1.8rem; color: white; margin: 0 auto 16px;">
+                        <i class="bi bi-basket2-fill"></i>
+                    </div>
+                    <h5>Quality Ingredients</h5>
+                    <p style="color: var(--gray-500); font-size: 0.9rem;">
+                        We source only the freshest, highest-quality ingredients for every dish we prepare.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="chef-card h-100">
+                    <div style="width: 72px; height: 72px; background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+                                border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;
+                                font-size: 1.8rem; color: white; margin: 0 auto 16px;">
+                        <i class="bi bi-book-half"></i>
+                    </div>
+                    <h5>Traditional Recipes</h5>
+                    <p style="color: var(--gray-500); font-size: 0.9rem;">
+                        Time-honored recipes passed down through generations, preserved with care and precision.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="chef-card h-100">
+                    <div style="width: 72px; height: 72px; background: linear-gradient(135deg, var(--info), #5DB8C8);
+                                border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;
+                                font-size: 1.8rem; color: white; margin: 0 auto 16px;">
+                        <i class="bi bi-heart-fill"></i>
+                    </div>
+                    <h5>Warm Hospitality</h5>
+                    <p style="color: var(--gray-500); font-size: 0.9rem;">
+                        Every guest is family. We treat each visit with the warmth and care it deserves.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="chef-card h-100">
+                    <div style="width: 72px; height: 72px; background: linear-gradient(135deg, var(--success), #5DD879);
+                                border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;
+                                font-size: 1.8rem; color: white; margin: 0 auto 16px;">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <h5>Community First</h5>
+                    <p style="color: var(--gray-500); font-size: 0.9rem;">
+                        We are proud to be part of Kuala Lumpur's vibrant community and give back whenever we can.
+                    </p>
+                </div>
             </div>
         </div>
     </div>

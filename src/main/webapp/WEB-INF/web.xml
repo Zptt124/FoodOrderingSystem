@@ -4,7 +4,7 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          id="WebApp_ID" version="6.0">
 
-    <display-name>Jade Dragon Chinese Restaurant 玉龙中餐馆</display-name>
+    <display-name>Jade Dragon Restaurant - Authentic Chinese Cuisine</display-name>
 
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>

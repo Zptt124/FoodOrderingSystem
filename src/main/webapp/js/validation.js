@@ -1,5 +1,5 @@
 /**
- * Jade Dragon Chinese Restaurant
+ * Jade Dragon Restaurant
  * Form Validation JavaScript
  * Used by: register.jsp, contact.jsp, checkout forms
  */
@@ -10,62 +10,69 @@ document.addEventListener('DOMContentLoaded', function () {
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         const usernameInput = registerForm.querySelector('input[name="username"]');
-        const emailInput = registerForm.querySelector('input[name="email"]');
-        const phoneInput = registerForm.querySelector('input[name="phone"]');
+        const emailInput    = registerForm.querySelector('input[name="email"]');
+        const phoneInput    = registerForm.querySelector('input[name="phone"]');
         const passwordInput = registerForm.querySelector('input[name="password"]');
-        const confirmInput = registerForm.querySelector('input[name="confirmPassword"]');
-        const pwMatchError = document.getElementById('pwMatchError');
+        const confirmInput  = registerForm.querySelector('input[name="confirmPassword"]');
+        const pwMatchMsg    = document.getElementById('pwMatchError');
 
-        // Real-time password match validation
-        if (confirmInput && passwordInput && pwMatchError) {
+        // Real-time password match checking
+        if (confirmInput && passwordInput && pwMatchMsg) {
             function checkPasswordMatch() {
                 if (confirmInput.value.length > 0 && passwordInput.value !== confirmInput.value) {
                     confirmInput.classList.add('is-invalid');
-                    pwMatchError.style.display = 'block';
+                    confirmInput.classList.remove('is-valid');
+                    pwMatchMsg.style.display = 'block';
                 } else if (confirmInput.value.length > 0) {
                     confirmInput.classList.remove('is-invalid');
                     confirmInput.classList.add('is-valid');
-                    pwMatchError.style.display = 'none';
+                    pwMatchMsg.style.display = 'none';
                 }
             }
             passwordInput.addEventListener('input', checkPasswordMatch);
             confirmInput.addEventListener('input', checkPasswordMatch);
         }
 
-        // Password strength indicator
+        // Password strength indicator with colored bar
         if (passwordInput) {
+            const strengthBar = document.getElementById('passwordStrengthBar');
+            const strengthText = document.getElementById('passwordStrengthText');
+
             passwordInput.addEventListener('input', function () {
                 const val = this.value;
-                let strength = 0;
-                if (val.length >= 6) strength++;
-                if (val.length >= 8) strength++;
-                if (/[A-Z]/.test(val)) strength++;
-                if (/[0-9]/.test(val)) strength++;
-                if (/[^A-Za-z0-9]/.test(val)) strength++;
+                let score = 0;
+                if (val.length >= 6) score++;
+                if (val.length >= 8) score++;
+                if (/[A-Z]/.test(val)) score++;
+                if (/[0-9]/.test(val)) score++;
+                if (/[^A-Za-z0-9]/.test(val)) score++;
 
-                const colors = ['#C41E3A', '#E67E22', '#D4A843', '#2ECC71', '#27AE60'];
-                const labels = ['Weak 弱', 'Fair 一般', 'Good 好', 'Strong 强', 'Very Strong 很强'];
-                const idx = Math.min(strength, 4);
+                const levels = [
+                    { cls: 'strength-weak',   label: 'Weak',   color: '#DC3545' },
+                    { cls: 'strength-fair',   label: 'Fair',   color: '#FFC107' },
+                    { cls: 'strength-good',   label: 'Good',   color: '#17A2B8' },
+                    { cls: 'strength-strong', label: 'Strong', color: '#28A745' },
+                    { cls: 'strength-strong', label: 'Very Strong', color: '#20C997' }
+                ];
+                const idx = Math.min(score, 4);
+                const level = levels[idx];
 
-                this.style.borderColor = colors[idx];
-                let hint = this.parentElement.querySelector('.password-strength');
-                if (!hint) {
-                    hint = document.createElement('small');
-                    hint.className = 'password-strength';
-                    hint.style.display = 'block';
-                    hint.style.marginTop = '4px';
-                    this.parentElement.appendChild(hint);
+                if (strengthBar) {
+                    strengthBar.className = 'password-strength-bar ' + level.cls;
                 }
-                hint.textContent = 'Strength: ' + labels[idx];
-                hint.style.color = colors[idx];
+                if (strengthText) {
+                    strengthText.textContent = 'Strength: ' + level.label;
+                    strengthText.style.color = level.color;
+                }
             });
         }
 
-        // Username real-time validation
+        // Username blur validation
         if (usernameInput) {
             usernameInput.addEventListener('blur', function () {
                 if (this.value.length > 0 && this.value.length < 3) {
                     this.classList.add('is-invalid');
+                    this.classList.remove('is-valid');
                 } else if (this.value.length >= 3) {
                     this.classList.remove('is-invalid');
                     this.classList.add('is-valid');
@@ -73,25 +80,27 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // Email real-time validation
+        // Email blur validation
         if (emailInput) {
             emailInput.addEventListener('blur', function () {
-                const emailRegex = /^(?!.*\.\.)[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
-                if (this.value.length > 0 && !emailRegex.test(this.value)) {
+                const re = /^(?!.*\.\.)[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+                if (this.value.length > 0 && !re.test(this.value)) {
                     this.classList.add('is-invalid');
-                } else if (emailRegex.test(this.value)) {
+                    this.classList.remove('is-valid');
+                } else if (re.test(this.value)) {
                     this.classList.remove('is-invalid');
                     this.classList.add('is-valid');
                 }
             });
         }
 
-        // Phone format validation
+        // Phone format validation (optional field)
         if (phoneInput) {
             phoneInput.addEventListener('blur', function () {
-                const phoneRegex = /^\+?[0-9]{7,15}$/;
-                if (this.value.length > 0 && !phoneRegex.test(this.value)) {
+                const re = /^\+?[0-9]{7,15}$/;
+                if (this.value.length > 0 && !re.test(this.value)) {
                     this.classList.add('is-invalid');
+                    this.classList.remove('is-valid');
                 } else if (this.value.length > 0) {
                     this.classList.remove('is-invalid');
                     this.classList.add('is-valid');
@@ -101,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // Form submit validation
+        // Full form submit validation
         registerForm.addEventListener('submit', function (e) {
             let hasError = false;
 
@@ -110,8 +119,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 hasError = true;
             }
 
-            const emailRegex = /^(?!.*\.\.)[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
-            if (!emailInput.value || !emailRegex.test(emailInput.value)) {
+            const emailRe = /^(?!.*\.\.)[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+            if (!emailInput.value || !emailRe.test(emailInput.value)) {
                 emailInput.classList.add('is-invalid');
                 hasError = true;
             }
@@ -133,7 +142,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (hasError) {
                 e.preventDefault();
-                // Scroll to first error
                 const firstError = registerForm.querySelector('.is-invalid');
                 if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
@@ -145,8 +153,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (contactForm) {
         contactForm.addEventListener('submit', function (e) {
             let hasError = false;
-            const nameInput = this.querySelector('input[name="name"]');
-            const emailInput = this.querySelector('input[name="email"]');
+            const nameInput    = this.querySelector('input[name="name"]');
+            const emailInput   = this.querySelector('input[name="email"]');
             const messageInput = this.querySelector('textarea[name="message"]');
 
             if (!nameInput.value || nameInput.value.length < 2) {
@@ -156,8 +164,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 nameInput.classList.remove('is-invalid');
             }
 
-            const emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
-            if (!emailInput.value || !emailRegex.test(emailInput.value)) {
+            const emailRe = /^[^@]+@[^@]+\.[^@]+$/;
+            if (!emailInput.value || !emailRe.test(emailInput.value)) {
                 emailInput.classList.add('is-invalid');
                 hasError = true;
             } else {

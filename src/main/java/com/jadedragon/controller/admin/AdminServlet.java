@@ -26,16 +26,16 @@ public class AdminServlet extends HttpServlet {
             FoodDAO foodDAO = new FoodDAO();
             UserDAO userDAO = new UserDAO();
 
-            request.setAttribute("totalOrders", orderDAO.getOrderCount());
-            request.setAttribute("totalRevenue", orderDAO.getTotalRevenue());
-            request.setAttribute("totalFoodItems", foodDAO.getFoodCount());
-            request.setAttribute("totalCustomers", userDAO.getUserCount());
+            request.setAttribute("orderCount", orderDAO.getOrderCount());
+            request.setAttribute("revenue", orderDAO.getTotalRevenue());
+            request.setAttribute("foodCount", foodDAO.getFoodCount());
+            request.setAttribute("customerCount", userDAO.getUserCount());
 
-            List<Order> recentOrders = orderDAO.findByStatus("pending");
-            if (recentOrders.size() > 10) {
-                recentOrders = recentOrders.subList(0, 10);
+            List<Order> pendingOrders = orderDAO.findByStatus("pending");
+            if (pendingOrders.size() > 10) {
+                pendingOrders = pendingOrders.subList(0, 10);
             }
-            request.setAttribute("recentOrders", recentOrders);
+            request.setAttribute("pendingOrders", pendingOrders);
 
             RequestDispatcher rd = request.getRequestDispatcher("admin/dashboard.jsp");
             rd.forward(request, response);

@@ -2,71 +2,93 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ include file="header.jsp" %>
-<%@ page import="com.jadedragon.dao.OrderDAO, com.jadedragon.model.Order, com.jadedragon.model.User, java.util.List" %>
 <%
-    User user = (User) session.getAttribute("user");
-    if (user == null) { response.sendRedirect("login.jsp"); return; }
-    OrderDAO orderDAO = new OrderDAO();
-    List<Order> myOrders = orderDAO.findByUserId(user.getUserId());
-    request.setAttribute("myOrders", myOrders);
+    com.jadedragon.model.User sessionUser = (com.jadedragon.model.User) session.getAttribute("user");
+    if (sessionUser == null) { response.sendRedirect("login.jsp"); return; }
 %>
 
-<section style="background: #FFF8E7; min-height: 80vh; padding: 40px 0;">
-<div class="container">
-    <h2 class="section-title">My Orders <span style="font-family: 'Noto Serif SC';">我的订单</span></h2>
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1>My Orders</h1>
+        <p>View and track your order history</p>
+    </div>
+</section>
 
-    <c:choose>
-        <c:when test="${not empty myOrders}">
-            <c:forEach var="order" items="${myOrders}">
-                <div class="card mb-3">
-                    <div class="card-header d-flex justify-content-between align-items-center"
-                         style="background: #1A1A2E; color: #FFF8E7;">
-                        <div>
-                            <strong>Order #${order.orderId}</strong>
-                            <small style="opacity: 0.7;"> | ${order.orderDate}</small>
+<!-- Orders Section -->
+<section style="background: var(--cream); min-height: 60vh; padding: 40px 0;">
+    <div class="container">
+        <c:choose>
+            <c:when test="${not empty orders}">
+                <c:forEach var="order" items="${orders}">
+                    <div class="order-card mb-4">
+                        <div class="order-card-header">
+                            <div>
+                                <strong>Order #${order.orderId}</strong>
+                                <small class="text-muted ms-2">
+                                    <fmt:formatDate value="${order.orderDate}" pattern="yyyy-MM-dd HH:mm"/>
+                                </small>
+                            </div>
+                            <span class="status-badge status-${order.status}">${order.statusLabel}</span>
                         </div>
-                        <span class="badge" style="background: #D4A843; color: #1A1A2E; font-size: 0.9rem;">
-                            ${order.statusCn}
-                        </span>
+                        <div class="order-card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Add-Ons</th>
+                                            <th class="text-center">Qty</th>
+                                            <th class="text-end">Unit Price</th>
+                                            <th class="text-end">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="item" items="${order.items}">
+                                            <tr>
+                                                <td>${item.foodName}</td>
+                                                <td>
+                                                    <small class="text-muted">${empty item.addOns ? '-' : item.addOns}</small>
+                                                </td>
+                                                <td class="text-center">${item.quantity}</td>
+                                                <td class="text-end">RM <fmt:formatNumber value="${item.unitPrice}" pattern="#0.00"/></td>
+                                                <td class="text-end">RM <fmt:formatNumber value="${item.subtotal}" pattern="#0.00"/></td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4" class="text-end"><strong>Total:</strong></td>
+                                            <td class="text-end">
+                                                <strong style="color: var(--red);">
+                                                    RM <fmt:formatNumber value="${order.totalPrice}" pattern="#0.00"/>
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <c:if test="${not empty order.notes}">
+                                <p class="mt-3 mb-0"><small><strong>Notes:</strong> ${order.notes}</small></p>
+                            </c:if>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr><th>Item</th><th>Qty</th><th>Price</th></tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach var="oi" items="${order.items}">
-                                    <tr>
-                                        <td>${oi.foodName} <br><small style="color: #C41E3A;">${oi.foodNameCn}</small></td>
-                                        <td>${oi.quantity}</td>
-                                        <td>RM <fmt:formatNumber value="${oi.subtotal}" pattern="#0.00"/></td>
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="2" class="text-end"><strong>Total 总计:</strong></td>
-                                    <td><strong style="color: #C41E3A;">RM <fmt:formatNumber value="${order.totalPrice}" pattern="#0.00"/></strong></td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                        <c:if test="${not empty order.notes}">
-                            <p><small><strong>Notes:</strong> ${order.notes}</small></p>
-                        </c:if>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="bi bi-receipt"></i>
                     </div>
+                    <h4>No Orders Yet</h4>
+                    <p>You have not placed any orders. Start your culinary journey with Jade Dragon!</p>
+                    <a href="MenuServlet" class="btn btn-primary">
+                        <i class="bi bi-grid"></i> Browse Menu
+                    </a>
                 </div>
-            </c:forEach>
-        </c:when>
-        <c:otherwise>
-            <div class="text-center py-5">
-                <span style="font-size: 4rem;">📋</span>
-                <h3>No orders yet 暂无订单</h3>
-                <p>Start your culinary journey with Jade Dragon!</p>
-                <a href="MenuServlet" class="btn btn-lg" style="background: #C41E3A; color: white;">Order Now 立即点餐</a>
-            </div>
-        </c:otherwise>
-    </c:choose>
-</div>
+            </c:otherwise>
+        </c:choose>
+    </div>
 </section>
 
 <%@ include file="footer.jsp" %>

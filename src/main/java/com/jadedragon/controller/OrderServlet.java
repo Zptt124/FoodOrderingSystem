@@ -42,7 +42,7 @@ public class OrderServlet extends HttpServlet {
         } else {
             // Show my orders
             List<Order> orders = orderDAO.findByUserId(user.getUserId());
-            request.setAttribute("myOrders", orders);
+            request.setAttribute("orders", orders);
             RequestDispatcher rd = request.getRequestDispatcher("my-orders.jsp");
             rd.forward(request, response);
         }
@@ -88,7 +88,6 @@ public class OrderServlet extends HttpServlet {
             oi.setAddOns(ci.getAddOns());
             oi.setUnitPrice(ci.getUnitPrice());
             oi.setFoodName(ci.getFoodName());
-            oi.setFoodNameCn(ci.getFoodNameCn());
             oi.setSubtotal(ci.getSubtotal());
             orderItems.add(oi);
             total = total.add(ci.getSubtotal());

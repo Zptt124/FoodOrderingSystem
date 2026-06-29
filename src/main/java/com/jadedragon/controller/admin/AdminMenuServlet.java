@@ -46,7 +46,6 @@ public class AdminMenuServlet extends HttpServlet {
         if ("add".equals(action) || "update".equals(action)) {
             FoodItem item = new FoodItem();
             item.setName(request.getParameter("name"));
-            item.setNameCn(request.getParameter("nameCn"));
             item.setDescription(request.getParameter("description"));
             item.setIngredients(request.getParameter("ingredients"));
             item.setNutritionalInfo(request.getParameter("nutritionalInfo"));

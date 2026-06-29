@@ -103,7 +103,7 @@ public class CartServlet extends HttpServlet {
             }
 
             if (!found) {
-                cart.add(new CartItem(foodId, food.getName(), food.getNameCn(),
+                cart.add(new CartItem(foodId, food.getName(),
                         food.getPrice(), quantity, addOns));
             }
 

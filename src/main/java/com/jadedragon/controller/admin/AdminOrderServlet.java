@@ -29,7 +29,7 @@ public class AdminOrderServlet extends HttpServlet {
             request.setAttribute("order", order);
             request.setAttribute("orders", (statusFilter != null && !statusFilter.isEmpty())
                     ? orderDAO.findByStatus(statusFilter) : orderDAO.findAll());
-            request.setAttribute("statusFilter", statusFilter);
+            request.setAttribute("currentFilter", statusFilter);
             RequestDispatcher rd = request.getRequestDispatcher("admin/orders.jsp");
             rd.forward(request, response);
             return;
@@ -43,7 +43,7 @@ public class AdminOrderServlet extends HttpServlet {
         }
 
         request.setAttribute("orders", orders);
-        request.setAttribute("statusFilter", statusFilter);
+        request.setAttribute("currentFilter", statusFilter);
         RequestDispatcher rd = request.getRequestDispatcher("admin/orders.jsp");
         rd.forward(request, response);
     }

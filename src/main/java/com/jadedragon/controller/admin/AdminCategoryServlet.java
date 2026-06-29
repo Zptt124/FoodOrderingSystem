@@ -40,7 +40,6 @@ public class AdminCategoryServlet extends HttpServlet {
         CategoryDAO dao = new CategoryDAO();
         Category cat = new Category();
         cat.setName(request.getParameter("name"));
-        cat.setNameCn(request.getParameter("nameCn"));
         cat.setDescription(request.getParameter("description"));
         cat.setImageUrl(request.getParameter("imageUrl"));
 

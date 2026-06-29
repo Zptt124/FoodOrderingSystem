@@ -12,18 +12,16 @@ public class CartItem implements Serializable {
 
     private int foodId;
     private String foodName;
-    private String foodNameCn;
     private BigDecimal unitPrice;
     private int quantity;
     private String addOns;
 
     public CartItem() {}
 
-    public CartItem(int foodId, String foodName, String foodNameCn,
+    public CartItem(int foodId, String foodName,
                     BigDecimal unitPrice, int quantity, String addOns) {
         this.foodId = foodId;
         this.foodName = foodName;
-        this.foodNameCn = foodNameCn;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
         this.addOns = addOns;
@@ -38,9 +36,6 @@ public class CartItem implements Serializable {
 
     public String getFoodName() { return foodName; }
     public void setFoodName(String foodName) { this.foodName = foodName; }
-
-    public String getFoodNameCn() { return foodNameCn; }
-    public void setFoodNameCn(String foodNameCn) { this.foodNameCn = foodNameCn; }
 
     public BigDecimal getUnitPrice() { return unitPrice; }
     public void setUnitPrice(BigDecimal unitPrice) { this.unitPrice = unitPrice; }

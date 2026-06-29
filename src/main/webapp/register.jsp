@@ -6,68 +6,136 @@
         return;
     }
 %>
-<section style="background: linear-gradient(rgba(26,26,46,0.92), rgba(45,27,46,0.92)),
-                url('https://images.unsplash.com/photo-1552566626-52f8b828add9?w=1920');
-                min-height: 85vh; padding: 60px 0; background-size: cover; background-position: center;">
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-lg-5 col-md-8">
-            <div class="card" style="background: #FFF; border: 2px solid #D4A843; border-radius: 12px;">
-                <div class="card-body p-4">
+
+<div class="auth-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-8">
+                <div class="auth-card">
                     <div class="text-center mb-3">
-                        <span style="font-size: 3rem;">🐉</span>
-                        <h3 style="font-family: 'Noto Serif SC'; color: #C41E3A;">注册 Register</h3>
-                        <p style="opacity: 0.7;">Create your Jade Dragon account</p>
+                        <span class="brand-icon d-inline-flex mx-auto mb-3" style="width:56px;height:56px;background:linear-gradient(135deg,var(--red),var(--red-light));border-radius:var(--radius-sm);align-items:center;justify-content:center;font-size:1.5rem;">
+                            <i class="bi bi-person-plus-fill" style="color:white;"></i>
+                        </span>
+                        <h2 style="font-family:var(--font-heading);">Create Account</h2>
+                        <p class="subtitle-text">Join Jade Dragon for exclusive offers and easy ordering</p>
                     </div>
 
                     <c:if test="${not empty error}">
-                        <div class="alert alert-danger">${error}</div>
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <div>${error}</div>
+                        </div>
+                    </c:if>
+                    <c:if test="${not empty success}">
+                        <div class="alert alert-success d-flex align-items-center" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <div>${success}</div>
+                        </div>
                     </c:if>
 
                     <form action="RegisterServlet" method="post" id="registerForm" novalidate>
+                        <!-- Username -->
                         <div class="mb-3">
-                            <label class="form-label">Username 用户名 <span style="color: #C41E3A;">*</span></label>
-                            <input type="text" name="username" class="form-control" value="${username}"
-                                   required minlength="3" placeholder="At least 3 characters">
+                            <label for="regUsername" class="form-label">
+                                <i class="bi bi-person"></i> Username <span style="color:var(--red);">*</span>
+                            </label>
+                            <input type="text" name="username" id="regUsername" class="form-control"
+                                   value="${username}" required minlength="3"
+                                   placeholder="At least 3 characters">
                             <div class="invalid-feedback">Username must be at least 3 characters.</div>
                         </div>
+
+                        <!-- Email -->
                         <div class="mb-3">
-                            <label class="form-label">Email 邮箱 <span style="color: #C41E3A;">*</span></label>
-                            <input type="email" name="email" class="form-control" value="${email}"
-                                   required placeholder="your@email.com">
-                            <div class="invalid-feedback">Please enter a valid email.</div>
+                            <label for="regEmail" class="form-label">
+                                <i class="bi bi-envelope"></i> Email <span style="color:var(--red);">*</span>
+                            </label>
+                            <input type="email" name="email" id="regEmail" class="form-control"
+                                   value="${email}" required
+                                   placeholder="your@email.com">
+                            <div class="invalid-feedback">Please enter a valid email address.</div>
                         </div>
+
+                        <!-- Phone -->
                         <div class="mb-3">
-                            <label class="form-label">Phone 手机号</label>
-                            <input type="tel" name="phone" class="form-control" value="${phone}"
-                                   placeholder="+60123456789">
+                            <label for="regPhone" class="form-label">
+                                <i class="bi bi-telephone"></i> Phone <small class="text-muted">(optional)</small>
+                            </label>
+                            <input type="tel" name="phone" id="regPhone" class="form-control"
+                                   value="${phone}" placeholder="+60123456789">
+                            <div class="invalid-feedback">Please enter a valid phone number (7-15 digits).</div>
                         </div>
+
+                        <!-- Password -->
                         <div class="mb-3">
-                            <label class="form-label">Password 密码 <span style="color: #C41E3A;">*</span></label>
+                            <label for="password" class="form-label">
+                                <i class="bi bi-lock"></i> Password <span style="color:var(--red);">*</span>
+                            </label>
                             <input type="password" name="password" id="password" class="form-control"
                                    required minlength="6" placeholder="At least 6 characters">
                             <div class="invalid-feedback">Password must be at least 6 characters.</div>
+                            <div class="password-strength">
+                                <div class="password-strength-bar" id="passwordStrengthBar"></div>
+                            </div>
+                            <small class="strength-text" id="passwordStrengthText"></small>
                         </div>
+
+                        <!-- Confirm Password -->
                         <div class="mb-3">
-                            <label class="form-label">Confirm Password 确认密码 <span style="color: #C41E3A;">*</span></label>
+                            <label for="confirmPassword" class="form-label">
+                                <i class="bi bi-lock-fill"></i> Confirm Password <span style="color:var(--red);">*</span>
+                            </label>
                             <input type="password" name="confirmPassword" id="confirmPassword" class="form-control"
-                                   required placeholder="Re-enter password">
+                                   required placeholder="Re-enter your password">
                             <div class="invalid-feedback" id="pwMatchError">Passwords do not match.</div>
                         </div>
-                        <button type="submit" class="btn btn-lg w-100" style="background: #C41E3A; color: white;">
-                            Register 注册
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100 mt-2">
+                            <i class="bi bi-person-check"></i> Create Account
                         </button>
                     </form>
+
                     <p class="text-center mt-3" style="opacity: 0.7;">
-                        Already have an account? 已有账号？
-                        <a href="login.jsp" style="color: #C41E3A;">Login 登录</a>
+                        Already have an account?
+                        <a href="login.jsp" style="color: var(--red); font-weight: 600;">Sign in here</a>
                     </p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</section>
+
+<!-- Password strength live indicator script -->
+<script>
+(function() {
+    var pw = document.getElementById('password');
+    var bar = document.getElementById('passwordStrengthBar');
+    var text = document.getElementById('passwordStrengthText');
+    if (!pw || !bar || !text) return;
+
+    pw.addEventListener('input', function() {
+        var val = this.value;
+        var score = 0;
+        if (val.length >= 6) score++;
+        if (val.length >= 8) score++;
+        if (/[A-Z]/.test(val)) score++;
+        if (/[0-9]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+
+        var levels = [
+            { cls: 'strength-weak', label: 'Weak', color: '#C41E3A' },
+            { cls: 'strength-fair', label: 'Fair', color: '#E67E22' },
+            { cls: 'strength-good', label: 'Good', color: '#D4A843' },
+            { cls: 'strength-strong', label: 'Strong', color: '#28A745' },
+            { cls: 'strength-strong', label: 'Strong', color: '#28A745' }
+        ];
+        var idx = Math.min(score, 4);
+        bar.className = 'password-strength-bar ' + levels[idx].cls;
+        text.textContent = 'Strength: ' + levels[idx].label;
+        text.style.color = levels[idx].color;
+    });
+})();
+</script>
 
 <script src="js/validation.js"></script>
 <%@ include file="footer.jsp" %>

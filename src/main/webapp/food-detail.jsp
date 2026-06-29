@@ -5,152 +5,220 @@
 
 <%
     if (request.getAttribute("food") == null) {
-        response.sendRedirect("menu.jsp");
+        response.sendRedirect("MenuServlet");
         return;
     }
 %>
 
-<section style="background: #FFF8E7; min-height: 80vh; padding: 40px 0;">
-<div class="container">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
-            <li class="breadcrumb-item"><a href="MenuServlet">Menu</a></li>
-            <li class="breadcrumb-item active">${food.name}</li>
-        </ol>
-    </nav>
+<section class="section">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
+                <li class="breadcrumb-item"><a href="MenuServlet">Menu</a></li>
+                <li class="breadcrumb-item active" aria-current="page">${food.name}</li>
+            </ol>
+        </nav>
 
-    <div class="row">
-        <!-- Food Image -->
-        <div class="col-lg-6 mb-4">
-            <div style="background: linear-gradient(135deg, #C41E3A, #8B1A2B); border-radius: 16px;
-                        height: 350px; display: flex; align-items: center; justify-content: center;
-                        color: white; font-size: 6rem;">
-                🍲
-            </div>
-        </div>
-
-        <!-- Food Info -->
-        <div class="col-lg-6">
-            <h1 style="font-weight: 700; color: #1A1A2E;">${food.name}</h1>
-            <h3 style="font-family: 'Noto Serif SC'; color: #C41E3A;">${food.nameCn}</h3>
-
-            <span class="badge" style="background: #D4A843; color: #1A1A2E; font-size: 0.9rem; padding: 6px 12px;">
-                ${food.categoryNameCn != null ? food.categoryNameCn : food.categoryName}
-            </span>
-
-            <div class="my-3">
-                <span class="food-rating" style="font-size: 1.3rem;">★ ${food.rating}</span>
-                <span style="opacity: 0.7;">(${food.reviewCount} reviews)</span>
+        <div class="row">
+            <!-- Food Image -->
+            <div class="col-lg-6 mb-4">
+                <c:choose>
+                    <c:when test="${not empty food.imageUrl}">
+                        <img src="${food.imageUrl}" alt="${food.name}"
+                             style="width: 100%; border-radius: var(--radius-md); object-fit: cover; max-height: 420px;"
+                             onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'img-fallback\' style=\'min-height: 350px; border-radius: var(--radius-md); font-size: 5rem;\'>&#x1F372;</div>';">
+                    </c:when>
+                    <c:otherwise>
+                        <div class="img-fallback" style="min-height: 350px; border-radius: var(--radius-md); font-size: 5rem;">
+                            &#x1F372;
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
 
-            <p style="font-size: 1.05rem; line-height: 1.7; margin: 15px 0;">${food.description}</p>
+            <!-- Food Info -->
+            <div class="col-lg-6">
+                <h2 style="font-weight: 700; color: var(--dark);">${food.name}</h2>
 
-            <div class="row mb-3">
-                <div class="col-6">
-                    <strong style="color: #1A1A2E;">Ingredients 原料：</strong>
-                    <p style="font-size: 0.9rem;">${food.ingredients}</p>
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                    <span class="badge" style="background: var(--gold); color: var(--dark); font-size: 0.85rem; padding: 6px 14px; border-radius: var(--radius-full);">
+                        ${food.categoryName}
+                    </span>
+                    <c:if test="${food.rating > 0}">
+                        <span class="badge" style="background: var(--success); color: white; font-size: 0.85rem; padding: 6px 14px; border-radius: var(--radius-full);">
+                            <i class="bi bi-check-circle"></i> Available
+                        </span>
+                    </c:if>
                 </div>
-                <div class="col-6">
-                    <strong style="color: #1A1A2E;">Nutrition 营养：</strong>
-                    <p style="font-size: 0.9rem;">${food.nutritionalInfo}</p>
+
+                <!-- Star Rating & Review Count -->
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="rating-stars" style="font-size: 1.2rem;">
+                        <c:forEach begin="1" end="5" var="star">
+                            <c:choose>
+                                <c:when test="${star <= food.rating}">
+                                    <span class="filled">&#9733;</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="empty">&#9734;</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                    </div>
+                    <span class="rating-value">${food.rating}</span>
+                    <span class="rating-count">(${food.reviewCount} review<c:if test="${food.reviewCount != 1}">s</c:if>)</span>
                 </div>
-            </div>
 
-            <div class="food-price" style="font-size: 2rem; color: #C41E3A; margin: 15px 0;">
-                RM <fmt:formatNumber value="${food.price}" pattern="#0.00"/>
-            </div>
-
-            <!-- Add to Cart -->
-            <form action="CartServlet" method="post" class="add-to-cart-form">
-                <input type="hidden" name="action" value="add">
-                <input type="hidden" name="foodId" value="${food.foodId}">
-                <div class="row g-2 align-items-end">
-                    <div class="col-auto">
-                        <label class="form-label">Quantity 数量</label>
-                        <input type="number" name="quantity" value="1" min="1" max="10"
-                               class="form-control" style="width: 80px;">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">Add-ons 附加</label>
-                        <select name="addOns" class="form-select">
-                            <option value="">None</option>
-                            <option value="Extra Chili 加辣">Extra Chili 加辣</option>
-                            <option value="No MSG 不要味精">No MSG 不要味精</option>
-                            <option value="Extra Sauce 加酱">Extra Sauce 加酱</option>
-                            <option value="Add Rice 加米饭 (+RM3)">Add Rice 加米饭</option>
-                            <option value="Extra Cheese 加芝士">Extra Cheese 加芝士</option>
-                        </select>
-                    </div>
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-lg" style="background: #C41E3A; color: white;">
-                            <i class="bi bi-cart-plus"></i> Add to Cart 加入购物车
-                        </button>
-                    </div>
+                <!-- Price -->
+                <div class="food-price mb-3" style="font-size: 2.2rem;">
+                    RM <fmt:formatNumber value="${food.price}" pattern="#0.00"/>
                 </div>
-            </form>
-        </div>
-    </div>
 
-    <!-- Reviews Section -->
-    <div class="mt-5">
-        <h3 style="color: #1A1A2E; border-bottom: 2px solid #D4A843; padding-bottom: 10px;">
-            Reviews 评价 <span style="font-family: 'Noto Serif SC'; font-size: 1rem;">(${food.reviewCount})</span>
-        </h3>
+                <!-- Description -->
+                <p style="line-height: 1.8; color: var(--gray-700);">${food.description}</p>
 
-        <!-- Add Review -->
-        <c:if test="${not empty sessionScope.user}">
-            <div class="card mb-4" style="background: #FFF; border: 1px solid rgba(0,0,0,0.1);">
-                <div class="card-body">
-                    <h6>Write a Review 写评价</h6>
-                    <form action="OrderServlet" method="post">
-                        <input type="hidden" name="action" value="review">
-                        <input type="hidden" name="foodId" value="${food.foodId}">
-                        <div class="mb-2">
-                            <label class="form-label">Rating 评分</label>
-                            <select name="rating" class="form-select form-select-sm" style="width: 120px;" required>
-                                <option value="5">★★★★★ (5)</option>
-                                <option value="4">★★★★☆ (4)</option>
-                                <option value="3">★★★☆☆ (3)</option>
-                                <option value="2">★★☆☆☆ (2)</option>
-                                <option value="1">★☆☆☆☆ (1)</option>
+                <!-- Ingredients & Nutrition -->
+                <c:if test="${not empty food.ingredients}">
+                    <div class="card border-0 mb-3" style="background: var(--cream-dark); border-radius: var(--radius-sm);">
+                        <div class="card-body">
+                            <h6 class="mb-2" style="font-weight: 700; color: var(--dark);">
+                                <i class="bi bi-list-check me-2" style="color: var(--red);"></i>Ingredients
+                            </h6>
+                            <p class="mb-0" style="font-size: 0.92rem; color: var(--gray-700);">${food.ingredients}</p>
+                        </div>
+                    </div>
+                </c:if>
+
+                <c:if test="${not empty food.nutritionalInfo}">
+                    <div class="card border-0 mb-3" style="background: var(--cream-dark); border-radius: var(--radius-sm);">
+                        <div class="card-body">
+                            <h6 class="mb-2" style="font-weight: 700; color: var(--dark);">
+                                <i class="bi bi-clipboard2-heart me-2" style="color: var(--red);"></i>Nutritional Information
+                            </h6>
+                            <p class="mb-0" style="font-size: 0.92rem; color: var(--gray-700); white-space: pre-line;">${food.nutritionalInfo}</p>
+                        </div>
+                    </div>
+                </c:if>
+
+                <!-- Add to Cart Form -->
+                <form action="CartServlet" method="post" class="add-to-cart-form mt-4">
+                    <input type="hidden" name="action" value="add">
+                    <input type="hidden" name="foodId" value="${food.foodId}">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-auto">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" name="quantity" id="quantity" value="1" min="1" max="10"
+                                   class="form-control" style="width: 85px;">
+                        </div>
+                        <div class="col">
+                            <label for="addOns" class="form-label">Add-ons</label>
+                            <select name="addOns" id="addOns" class="form-select">
+                                <option value="">None</option>
+                                <option value="Extra Chili">Extra Chili</option>
+                                <option value="No MSG">No MSG</option>
+                                <option value="Extra Sauce">Extra Sauce</option>
+                                <option value="Add Rice (+RM3)">Add Rice (+RM3)</option>
+                                <option value="Extra Cheese">Extra Cheese</option>
                             </select>
                         </div>
-                        <div class="mb-2">
-                            <textarea name="comment" class="form-control" rows="2" placeholder="Your comment..."></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-sm" style="background: #D4A843; color: #1A1A2E;">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </c:if>
-
-        <!-- Reviews List -->
-        <c:choose>
-            <c:when test="${not empty reviews}">
-                <c:forEach var="review" items="${reviews}">
-                    <div class="card mb-2" style="background: #FFF; border: 1px solid rgba(0,0,0,0.05);">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <strong>${review.username}</strong>
-                                <small style="opacity: 0.6;">${review.createdAt}</small>
-                            </div>
-                            <div style="color: #D4A843;">
-                                <c:forEach begin="1" end="5" var="star">
-                                    ${star <= review.rating ? '★' : '☆'}
-                                </c:forEach>
-                            </div>
-                            <p style="margin-top: 5px;">${review.comment}</p>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-cart-plus"></i> Add to Cart
+                            </button>
                         </div>
                     </div>
-                </c:forEach>
-            </c:when>
-            <c:otherwise>
-                <p style="opacity: 0.6;">No reviews yet. Be the first! 暂无评价，来当第一个！</p>
-            </c:otherwise>
-        </c:choose>
+                </form>
+            </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="mt-5">
+            <div class="d-flex align-items-center justify-content-between mb-4" style="border-bottom: 2px solid var(--gold); padding-bottom: 12px;">
+                <h3 class="mb-0" style="color: var(--dark);">Reviews</h3>
+                <span style="color: var(--gray-500); font-size: 0.9rem;">${food.reviewCount} review<c:if test="${food.reviewCount != 1}">s</c:if></span>
+            </div>
+
+            <!-- Write a Review (logged-in users only) -->
+            <c:if test="${not empty sessionScope.user}">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <h6 class="mb-3" style="font-weight: 700;">Write a Review</h6>
+                        <form action="OrderServlet" method="post">
+                            <input type="hidden" name="action" value="review">
+                            <input type="hidden" name="foodId" value="${food.foodId}">
+                            <div class="mb-3">
+                                <label class="form-label">Your Rating</label>
+                                <div class="star-rating-input">
+                                    <input type="radio" name="rating" value="5" id="star5" required>
+                                    <label for="star5" title="5 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" name="rating" value="4" id="star4">
+                                    <label for="star4" title="4 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" name="rating" value="3" id="star3">
+                                    <label for="star3" title="3 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" name="rating" value="2" id="star2">
+                                    <label for="star2" title="2 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" name="rating" value="1" id="star1">
+                                    <label for="star1" title="1 star"><i class="bi bi-star-fill"></i></label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="reviewComment" class="form-label">Your Comment</label>
+                                <textarea name="comment" id="reviewComment" class="form-control" rows="3"
+                                          placeholder="Share your experience with this dish..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-gold">
+                                <i class="bi bi-pencil-square"></i> Submit Review
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </c:if>
+
+            <c:if test="${empty sessionScope.user}">
+                <div class="alert alert-info" role="alert">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    Please <a href="login.jsp" style="font-weight: 600;">log in</a> to leave a review.
+                </div>
+            </c:if>
+
+            <!-- Reviews List -->
+            <c:choose>
+                <c:when test="${not empty reviews}">
+                    <c:forEach var="review" items="${reviews}">
+                        <div class="review-card">
+                            <div class="review-header">
+                                <span class="review-user">${review.username}</span>
+                                <span class="review-date">${review.createdAt}</span>
+                            </div>
+                            <div class="rating-stars mb-2">
+                                <c:forEach begin="1" end="5" var="star">
+                                    <c:choose>
+                                        <c:when test="${star <= review.rating}">
+                                            <span class="filled">&#9733;</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="empty">&#9734;</span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                            </div>
+                            <p class="review-text mb-0">${review.comment}</p>
+                        </div>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <div class="text-center py-5">
+                        <div style="font-size: 3rem; opacity: 0.2; margin-bottom: 16px;">
+                            <i class="bi bi-chat-square-text"></i>
+                        </div>
+                        <p style="color: var(--gray-500);">No reviews yet. Be the first to share your experience!</p>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </div>
-</div>
 </section>
 
 <%@ include file="footer.jsp" %>

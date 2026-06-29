@@ -39,13 +39,12 @@ public class CategoryDAO {
     }
 
     public boolean add(Category cat) {
-        String sql = "INSERT INTO categories (name, name_cn, description, image_url) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO categories (name, description, image_url) VALUES (?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, cat.getName());
-            ps.setString(2, cat.getNameCn());
-            ps.setString(3, cat.getDescription());
-            ps.setString(4, cat.getImageUrl());
+            ps.setString(2, cat.getDescription());
+            ps.setString(3, cat.getImageUrl());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,14 +53,13 @@ public class CategoryDAO {
     }
 
     public boolean update(Category cat) {
-        String sql = "UPDATE categories SET name=?, name_cn=?, description=?, image_url=? WHERE category_id=?";
+        String sql = "UPDATE categories SET name=?, description=?, image_url=? WHERE category_id=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, cat.getName());
-            ps.setString(2, cat.getNameCn());
-            ps.setString(3, cat.getDescription());
-            ps.setString(4, cat.getImageUrl());
-            ps.setInt(5, cat.getCategoryId());
+            ps.setString(2, cat.getDescription());
+            ps.setString(3, cat.getImageUrl());
+            ps.setInt(4, cat.getCategoryId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -85,7 +83,6 @@ public class CategoryDAO {
         Category c = new Category();
         c.setCategoryId(rs.getInt("category_id"));
         c.setName(rs.getString("name"));
-        c.setNameCn(rs.getString("name_cn"));
         c.setDescription(rs.getString("description"));
         c.setImageUrl(rs.getString("image_url"));
         return c;

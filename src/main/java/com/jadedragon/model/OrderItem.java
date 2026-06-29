@@ -10,7 +10,6 @@ public class OrderItem implements Serializable {
     private int orderId;
     private int foodId;
     private String foodName;        // joined
-    private String foodNameCn;      // joined
     private int quantity;
     private String addOns;
     private BigDecimal unitPrice;
@@ -29,9 +28,6 @@ public class OrderItem implements Serializable {
 
     public String getFoodName() { return foodName; }
     public void setFoodName(String foodName) { this.foodName = foodName; }
-
-    public String getFoodNameCn() { return foodNameCn; }
-    public void setFoodNameCn(String foodNameCn) { this.foodNameCn = foodNameCn; }
 
     public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) { this.quantity = quantity; }

@@ -1,17 +1,41 @@
 /**
- * Jade Dragon Chinese Restaurant
+ * Jade Dragon Restaurant
  * Main JavaScript - UI interactions, cart, animations
  */
 
 document.addEventListener('DOMContentLoaded', function () {
 
+    // ============ Navbar scroll effect ============
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 4px 24px rgba(0,0,0,0.35)';
+            } else {
+                navbar.style.boxShadow = '';
+            }
+        });
+    }
+
+    // ============ Cart count badge pulse animation ============
+    const cartBadge = document.getElementById('cartBadge');
+    if (cartBadge && parseInt(cartBadge.textContent) > 0) {
+        cartBadge.classList.add('pulse');
+        setTimeout(() => { cartBadge.classList.remove('pulse'); }, 500);
+    }
+
     // ============ Cart Form: Prevent double submission ============
     document.querySelectorAll('.add-to-cart-form').forEach(form => {
         form.addEventListener('submit', function (e) {
             const btn = this.querySelector('button[type="submit"]');
-            if (btn) {
+            if (btn && !btn.disabled) {
                 btn.disabled = true;
-                btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Adding...';
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Adding...';
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHTML;
+                }, 2000);
             }
         });
     });
@@ -26,25 +50,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
-
-    // ============ Navbar scroll effect ============
-    const navbar = document.querySelector('.navbar');
-    if (navbar) {
-        window.addEventListener('scroll', function () {
-            if (window.scrollY > 50) {
-                navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
-            } else {
-                navbar.style.boxShadow = 'none';
-            }
-        });
-    }
-
-    // ============ Cart count badge animation ============
-    const cartBadge = document.querySelector('.navbar .badge.rounded-pill');
-    if (cartBadge && parseInt(cartBadge.textContent) > 0) {
-        cartBadge.style.animation = 'pulse 0.5s ease-in-out';
-        setTimeout(() => { cartBadge.style.animation = ''; }, 500);
-    }
 
     // ============ Alert auto-dismiss ============
     document.querySelectorAll('.alert-dismissible').forEach(alert => {
@@ -68,18 +73,49 @@ document.addEventListener('DOMContentLoaded', function () {
     // ============ Confirm delete actions ============
     document.querySelectorAll('[data-confirm]').forEach(el => {
         el.addEventListener('click', function (e) {
-            if (!confirm(this.getAttribute('data-confirm'))) {
+            if (!confirm(this.getAttribute('data-confirm') || 'Are you sure?')) {
                 e.preventDefault();
             }
         });
     });
 
+    // ============ Back to top button ============
+    const backToTopBtn = document.getElementById('backToTop');
+    if (backToTopBtn) {
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 400) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+        backToTopBtn.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
     // ============ Active nav link highlighting ============
     const currentPath = window.location.pathname;
-    document.querySelectorAll('.nav-link').forEach(link => {
-        if (link.getAttribute('href') && currentPath.includes(link.getAttribute('href').replace(/^\//, ''))) {
-            link.style.color = '#D4A843 !important';
+    document.querySelectorAll('.navbar .nav-link').forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && href !== '#' && currentPath.includes(href.replace(/^\//, '').split('?')[0])) {
+            link.classList.add('active');
         }
+    });
+
+    // ============ Cart quantity +/- buttons ============
+    document.querySelectorAll('.qty-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const input = document.querySelector(this.dataset.target);
+            if (!input) return;
+            let val = parseInt(input.value) || 1;
+            if (this.dataset.action === 'increase') {
+                val = Math.min(val + 1, parseInt(input.max) || 10);
+            } else {
+                val = Math.max(val - 1, parseInt(input.min) || 1);
+            }
+            input.value = val;
+        });
     });
 
 });
@@ -91,16 +127,13 @@ function formatCurrency(amount) {
 
 // ============ Utility: Show toast notification ============
 function showToast(message, type) {
-    const toastContainer = document.createElement('div');
-    toastContainer.style.cssText = 'position: fixed; top: 80px; right: 20px; z-index: 9999;';
-    toastContainer.innerHTML = `
-        <div class="alert alert-${type || 'success'} alert-dismissible fade show" role="alert"
-             style="min-width: 280px; box-shadow: 0 4px 16px rgba(0,0,0,0.15);">
+    const container = document.createElement('div');
+    container.className = 'toast-container';
+    container.innerHTML = `
+        <div class="custom-toast alert-${type || 'success'}">
+            <i class="bi bi-${type === 'danger' ? 'exclamation-triangle' : type === 'warning' ? 'exclamation-circle' : 'check-circle'}"></i>
             ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>`;
-    document.body.appendChild(toastContainer);
-    setTimeout(() => {
-        toastContainer.remove();
-    }, 4000);
+    document.body.appendChild(container);
+    setTimeout(() => container.remove(), 4000);
 }

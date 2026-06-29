@@ -9,115 +9,217 @@
         return;
     }
     List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+
+    // Calculate cart totals
+    BigDecimal subtotal = BigDecimal.ZERO;
+    if (cart != null) {
+        for (CartItem ci : cart) {
+            subtotal = subtotal.add(ci.getSubtotal());
+        }
+    }
+    BigDecimal deliveryFee = subtotal.compareTo(new BigDecimal("50.00")) > 0
+        ? BigDecimal.ZERO
+        : new BigDecimal("3.00");
+    BigDecimal total = subtotal.add(deliveryFee);
 %>
 
-<section style="background: #FFF8E7; min-height: 80vh; padding: 40px 0;">
-<div class="container">
-    <h2 class="section-title">Shopping Cart <span style="font-family: 'Noto Serif SC';">购物车</span></h2>
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1><i class="bi bi-cart3 me-2"></i>Your Cart</h1>
+        <p>Review your selections before placing your order</p>
+    </div>
+</section>
 
+<section style="background: var(--cream); min-height: 60vh; padding: 40px 0;">
+<div class="container">
     <c:choose>
+        <%-- Cart has items --%>
         <c:when test="${not empty sessionScope.cart}">
             <div class="row">
+                <!-- Cart Items -->
                 <div class="col-lg-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <table class="table table-hover align-middle">
-                                <thead>
+                    <div class="cart-table">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Price</th>
+                                    <th class="text-center">Quantity</th>
+                                    <th>Subtotal</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="item" items="${sessionScope.cart}">
                                     <tr>
-                                        <th>Item 菜品</th>
-                                        <th>Price 价格</th>
-                                        <th>Qty 数量</th>
-                                        <th>Add-ons 附加</th>
-                                        <th>Subtotal 小计</th>
-                                        <th></th>
+                                        <td>
+                                            <strong>${item.foodName}</strong>
+                                            <c:if test="${not empty item.addOns}">
+                                                <br><small class="text-muted">
+                                                    <i class="bi bi-plus-circle"></i> ${item.addOns}
+                                                </small>
+                                            </c:if>
+                                        </td>
+                                        <td>RM <fmt:formatNumber value="${item.unitPrice}" pattern="#0.00"/></td>
+                                        <td class="text-center" style="min-width:140px;">
+                                            <form action="CartServlet" method="post" class="d-flex align-items-center justify-content-center gap-1">
+                                                <input type="hidden" name="action" value="update">
+                                                <input type="hidden" name="foodId" value="${item.foodId}">
+                                                <button type="button" class="btn btn-sm btn-outline-secondary qty-dec" style="border-radius:var(--radius-full);width:32px;height:32px;padding:0;line-height:1;">
+                                                    <i class="bi bi-dash"></i>
+                                                </button>
+                                                <input type="number" name="quantity" value="${item.quantity}"
+                                                       min="1" max="20" class="form-control form-control-sm qty-input"
+                                                       style="width:55px;text-align:center;font-weight:600;"
+                                                       onchange="this.form.submit()">
+                                                <button type="button" class="btn btn-sm btn-outline-secondary qty-inc" style="border-radius:var(--radius-full);width:32px;height:32px;padding:0;line-height:1;">
+                                                    <i class="bi bi-plus"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                        <td><strong>RM <fmt:formatNumber value="${item.subtotal}" pattern="#0.00"/></strong></td>
+                                        <td class="text-end">
+                                            <form action="CartServlet" method="post" style="display:inline;">
+                                                <input type="hidden" name="action" value="remove">
+                                                <input type="hidden" name="foodId" value="${item.foodId}">
+                                                <button type="submit" class="btn btn-sm"
+                                                        style="color:var(--red);background:transparent;border:none;"
+                                                        title="Remove item">
+                                                    <i class="bi bi-trash3" style="font-size:1.1rem;"></i>
+                                                </button>
+                                            </form>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <c:set var="total" value="0"/>
-                                    <c:forEach var="item" items="${sessionScope.cart}">
-                                        <c:set var="subtotal" value="${item.unitPrice * item.quantity}"/>
-                                        <c:set var="total" value="${total + subtotal}"/>
-                                        <tr>
-                                            <td>
-                                                <strong>${item.foodName}</strong>
-                                                <br><small style="font-family: 'Noto Serif SC'; color: #C41E3A;">${item.foodNameCn}</small>
-                                            </td>
-                                            <td>RM <fmt:formatNumber value="${item.unitPrice}" pattern="#0.00"/></td>
-                                            <td>
-                                                <form action="CartServlet" method="get" style="display:inline;">
-                                                    <input type="hidden" name="action" value="update">
-                                                    <input type="hidden" name="foodId" value="${item.foodId}">
-                                                    <input type="number" name="quantity" value="${item.quantity}"
-                                                           min="1" max="10" class="form-control form-control-sm"
-                                                           style="width: 60px;" onchange="this.form.submit()">
-                                                </form>
-                                            </td>
-                                            <td><small>${empty item.addOns ? '-' : item.addOns}</small></td>
-                                            <td><strong>RM <fmt:formatNumber value="${subtotal}" pattern="#0.00"/></strong></td>
-                                            <td>
-                                                <a href="CartServlet?action=remove&foodId=${item.foodId}"
-                                                   class="btn btn-sm" style="color: #C41E3A;">
-                                                    <i class="bi bi-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                            <a href="CartServlet?action=clear" class="btn btn-outline-danger btn-sm"
-                               onclick="return confirm('Clear cart? 确定清空购物车？')">
-                                <i class="bi bi-cart-x"></i> Clear Cart 清空购物车
-                            </a>
-                        </div>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-3">
+                        <a href="CartServlet?action=clear"
+                           class="btn btn-outline-danger btn-sm"
+                           onclick="return confirm('Are you sure you want to clear your entire cart?')">
+                            <i class="bi bi-cart-x"></i> Clear Cart
+                        </a>
+                        <a href="MenuServlet" class="btn btn-outline-primary btn-sm ms-2">
+                            <i class="bi bi-arrow-left"></i> Continue Shopping
+                        </a>
                     </div>
                 </div>
 
+                <!-- Cart Summary Sidebar -->
                 <div class="col-lg-4">
-                    <div class="card" style="border: 2px solid #D4A843;">
-                        <div class="card-body">
-                            <h5 style="color: #1A1A2E;">Order Summary 订单摘要</h5>
-                            <hr>
-                            <c:forEach var="item" items="${sessionScope.cart}">
-                                <div class="d-flex justify-content-between" style="font-size: 0.9rem;">
-                                    <span>${item.foodName} x${item.quantity}</span>
-                                    <span>RM <fmt:formatNumber value="${item.unitPrice * item.quantity}" pattern="#0.00"/></span>
-                                </div>
-                            </c:forEach>
-                            <hr>
-                            <div class="d-flex justify-content-between" style="font-size: 1.2rem; font-weight: 700;">
-                                <span>Total 总计:</span>
-                                <span style="color: #C41E3A;">RM <fmt:formatNumber value="${total}" pattern="#0.00"/></span>
-                            </div>
+                    <div class="cart-summary">
+                        <h4><i class="bi bi-receipt me-2"></i>Order Summary</h4>
 
-                            <form action="OrderServlet" method="post" class="mt-3">
-                                <input type="hidden" name="action" value="checkout">
-                                <div class="mb-2">
-                                    <label class="form-label">Order Notes 订单备注</label>
-                                    <textarea name="notes" class="form-control" rows="2"
-                                              placeholder="Special requests..."></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-lg w-100" style="background: #C41E3A; color: white;">
-                                    <i class="bi bi-check-circle"></i> Place Order 下单
-                                </button>
-                            </form>
-                            <a href="MenuServlet" class="btn btn-outline-gold w-100 mt-2">Continue Shopping 继续购物</a>
+                        <c:forEach var="item" items="${sessionScope.cart}">
+                            <div class="d-flex justify-content-between align-items-center mb-2" style="font-size:0.9rem;">
+                                <span style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                                    ${item.foodName}
+                                    <span class="text-muted">x${item.quantity}</span>
+                                </span>
+                                <span>RM <fmt:formatNumber value="${item.subtotal}" pattern="#0.00"/></span>
+                            </div>
+                        </c:forEach>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between mb-2" style="font-size:0.92rem;">
+                            <span>Subtotal</span>
+                            <span>RM <fmt:formatNumber value="<%= subtotal %>" pattern="#0.00"/></span>
                         </div>
+
+                        <div class="d-flex justify-content-between mb-2" style="font-size:0.92rem;">
+                            <span>Delivery Fee</span>
+                            <span>
+                                <% if (deliveryFee.compareTo(BigDecimal.ZERO) == 0) { %>
+                                    <span class="text-success fw-bold">FREE</span>
+                                    <small class="text-muted text-decoration-line-through ms-1">RM 3.00</small>
+                                <% } else { %>
+                                    RM <%= String.format("%.2f", deliveryFee.doubleValue()) %>
+                                <% } %>
+                            </span>
+                        </div>
+
+                        <% if (subtotal.compareTo(new BigDecimal("50.00")) > 0) { %>
+                            <small class="text-success d-block mb-2">
+                                <i class="bi bi-check-circle-fill"></i> Free delivery unlocked! Orders over RM 50 qualify.
+                            </small>
+                        <% } else { %>
+                            <small class="text-muted d-block mb-2">
+                                <i class="bi bi-info-circle"></i> Add RM <%= String.format("%.2f", new BigDecimal("50.00").subtract(subtotal)) %> more for free delivery.
+                            </small>
+                        <% } %>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between mb-3" style="font-size:1.2rem; font-weight:700;">
+                            <span>Total</span>
+                            <span style="color:var(--red);">RM <fmt:formatNumber value="<%= total %>" pattern="#0.00"/></span>
+                        </div>
+
+                        <form action="OrderServlet" method="post">
+                            <input type="hidden" name="action" value="checkout">
+                            <div class="mb-3">
+                                <label for="orderNotes" class="form-label">
+                                    <i class="bi bi-pencil"></i> Order Notes
+                                </label>
+                                <textarea name="notes" id="orderNotes" class="form-control" rows="2"
+                                          placeholder="Special requests, allergies, etc.">${param.notes}</textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                <i class="bi bi-check-circle"></i> Place Order
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </c:when>
+
+        <%-- Empty Cart --%>
         <c:otherwise>
-            <div class="text-center py-5">
-                <span style="font-size: 4rem;">🛒</span>
-                <h3 style="color: #1A1A2E;">Your cart is empty 购物车为空</h3>
-                <p>Start adding delicious Chinese dishes to your cart!</p>
-                <a href="MenuServlet" class="btn btn-lg" style="background: #C41E3A; color: white;">
-                    Browse Menu 浏览菜单
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="bi bi-cart3"></i>
+                </div>
+                <h4>Your cart is empty</h4>
+                <p>Looks like you haven't added anything yet. Browse our menu and discover delicious dishes!</p>
+                <a href="MenuServlet" class="btn btn-primary btn-lg">
+                    <i class="bi bi-grid"></i> Browse Menu
                 </a>
             </div>
         </c:otherwise>
     </c:choose>
 </div>
 </section>
+
+<!-- Quantity +/- button handlers -->
+<script>
+(function() {
+    document.querySelectorAll('.qty-dec').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var form = this.closest('form');
+            var input = form.querySelector('.qty-input');
+            var val = parseInt(input.value) || 1;
+            if (val > 1) {
+                input.value = val - 1;
+                form.submit();
+            }
+        });
+    });
+    document.querySelectorAll('.qty-inc').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var form = this.closest('form');
+            var input = form.querySelector('.qty-input');
+            var val = parseInt(input.value) || 1;
+            if (val < 20) {
+                input.value = val + 1;
+                form.submit();
+            }
+        });
+    });
+})();
+</script>
 
 <%@ include file="footer.jsp" %>

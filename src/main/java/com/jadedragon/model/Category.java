@@ -7,17 +7,15 @@ public class Category implements Serializable {
 
     private int categoryId;
     private String name;
-    private String nameCn;
     private String description;
     private String imageUrl;
 
     public Category() {}
 
-    public Category(int categoryId, String name, String nameCn,
+    public Category(int categoryId, String name,
                     String description, String imageUrl) {
         this.categoryId = categoryId;
         this.name = name;
-        this.nameCn = nameCn;
         this.description = description;
         this.imageUrl = imageUrl;
     }
@@ -27,9 +25,6 @@ public class Category implements Serializable {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-
-    public String getNameCn() { return nameCn; }
-    public void setNameCn(String nameCn) { this.nameCn = nameCn; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
