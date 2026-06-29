@@ -1,0 +1,332 @@
+/* ============================================
+   Jade Dragon Chinese Restaurant (玉龙中餐馆)
+   Custom Theme Stylesheet
+   ============================================ */
+
+/* ---- CSS Variables ---- */
+:root {
+    --red: #C41E3A;
+    --red-dark: #8B1A2B;
+    --gold: #D4A843;
+    --gold-dark: #8B7318;
+    --dark: #1A1A2E;
+    --dark-purple: #2D1B2E;
+    --cream: #FFF8E7;
+    --white: #FFFFFF;
+    --text-dark: #1A1A2E;
+    --text-muted: rgba(0, 0, 0, 0.6);
+    --font-chinese: 'Noto Serif SC', serif;
+    --font-body: 'Poppins', 'Segoe UI', sans-serif;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+}
+
+/* ---- Base ---- */
+body {
+    font-family: var(--font-body);
+    background: var(--cream);
+    color: var(--text-dark);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+}
+
+a {
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+/* ---- Navbar ---- */
+.navbar .nav-link {
+    color: var(--cream) !important;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 8px 14px !important;
+    transition: color 0.3s;
+}
+
+.navbar .nav-link:hover {
+    color: var(--gold) !important;
+}
+
+.btn-outline-gold {
+    border: 1.5px solid var(--gold) !important;
+    color: var(--gold) !important;
+    background: transparent;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-outline-gold:hover {
+    background: var(--gold) !important;
+    color: var(--dark) !important;
+}
+
+.btn-gold {
+    background: var(--gold) !important;
+    color: var(--dark) !important;
+    border: 1.5px solid var(--gold) !important;
+    font-weight: 500;
+}
+
+/* ---- Section Titles ---- */
+.section-title {
+    text-align: center;
+    margin-bottom: 35px;
+    font-weight: 700;
+    color: var(--text-dark);
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+}
+
+.section-title span {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--gold);
+    margin-top: 5px;
+}
+
+/* ---- Food Cards ---- */
+.food-card {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.35s ease;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.food-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--gold);
+}
+
+.food-card-img {
+    position: relative;
+    overflow: hidden;
+}
+
+.food-card-body {
+    padding: 18px;
+}
+
+.food-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--red);
+}
+
+.food-rating {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+/* ---- Category Quick Links ---- */
+.category-link {
+    display: block;
+    padding: 20px 10px;
+    border-radius: var(--radius-md);
+    transition: all 0.3s ease;
+    color: var(--text-dark);
+}
+
+.category-link:hover {
+    background: var(--white);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+    color: var(--red);
+}
+
+.category-icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--cream), var(--white));
+    border: 2px solid var(--gold);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+/* ---- Buttons ---- */
+.btn {
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    transition: all 0.3s;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+/* ---- Forms ---- */
+.form-control, .form-select {
+    border-radius: var(--radius-sm);
+    border: 1.5px solid rgba(0, 0, 0, 0.12);
+    padding: 10px 14px;
+    transition: all 0.3s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 0.2rem rgba(212, 168, 67, 0.25);
+}
+
+/* ---- Breadcrumb ---- */
+.breadcrumb {
+    margin-bottom: 20px;
+}
+
+.breadcrumb-item a {
+    color: var(--red);
+}
+
+/* ---- Accordion ---- */
+.accordion-button:not(.collapsed) {
+    background: var(--cream) !important;
+    color: var(--red) !important;
+    border-color: var(--gold);
+}
+
+.accordion-button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(212, 168, 67, 0.25);
+}
+
+/* ---- Cards ---- */
+.card {
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ---- Utility ---- */
+.bg-cream { background: var(--cream); }
+.bg-dark-theme { background: var(--dark); }
+.text-gold { color: var(--gold) !important; }
+.text-red { color: var(--red) !important; }
+
+/* ---- Admin specific ---- */
+.admin-nav .nav-link.active {
+    background: var(--gold) !important;
+    color: var(--dark) !important;
+}
+
+/* ---- Animations ---- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.food-card {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+.food-card:nth-child(1) { animation-delay: 0.05s; }
+.food-card:nth-child(2) { animation-delay: 0.10s; }
+.food-card:nth-child(3) { animation-delay: 0.15s; }
+.food-card:nth-child(4) { animation-delay: 0.20s; }
+.food-card:nth-child(5) { animation-delay: 0.25s; }
+.food-card:nth-child(6) { animation-delay: 0.30s; }
+
+/* ---- Lantern Glow (subtle) ---- */
+@keyframes lanternGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(212, 168, 67, 0.15); }
+    50% { box-shadow: 0 0 35px rgba(212, 168, 67, 0.3); }
+}
+
+.navbar {
+    animation: lanternGlow 4s ease-in-out infinite;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+    .navbar-brand span:first-child {
+        font-size: 1.2rem !important;
+    }
+
+    h1 { font-size: 1.8rem !important; }
+    h2 { font-size: 1.5rem !important; }
+
+    .food-card-img {
+        height: 150px !important;
+    }
+
+    .section-title {
+        font-size: 1.3rem;
+    }
+}
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--cream);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gold-dark);
+}
+
+/* ---- Table ---- */
+.table th {
+    font-weight: 600;
+    color: var(--text-dark);
+    border-bottom: 2px solid var(--gold);
+}
+
+.table-hover tbody tr:hover {
+    background: rgba(212, 168, 67, 0.08);
+}
+
+/* ---- Dropdown ---- */
+.dropdown-menu {
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-md);
+}
+
+/* ---- Badge ---- */
+.badge {
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+/* ---- Alert ---- */
+.alert {
+    border-radius: var(--radius-sm);
+}

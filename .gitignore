@@ -1,2 +1,7 @@
-/target/
+target/
+.idea/
+*.class
+*.jar
+*.log
 .DS_Store
+Thumbs.db
