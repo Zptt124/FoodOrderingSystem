@@ -335,7 +335,9 @@ img {
 .hero {
     position: relative;
     min-height: 85vh;
-    background: linear-gradient(135deg, var(--dark) 0%, #2D1B2E 40%, var(--red-dark) 100%);
+    background: linear-gradient(135deg, rgba(30,10,10,0.88) 0%, rgba(45,27,46,0.85) 40%, rgba(140,20,40,0.88) 100%),
+                url('https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?w=1200')
+                center / cover no-repeat;
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -640,7 +642,9 @@ form label, .form-label {
 /* ---- Auth Pages (Login/Register) ---- */
 .auth-page {
     min-height: calc(100vh - 76px);
-    background: linear-gradient(135deg, var(--cream) 0%, var(--white) 50%, var(--cream-dark) 100%);
+    background: linear-gradient(135deg, rgba(245,240,235,0.9) 0%, rgba(255,255,255,0.85) 50%, rgba(240,232,220,0.9) 100%),
+                url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80')
+                center / cover no-repeat fixed;
     display: flex;
     align-items: center;
     padding: 40px 0;
@@ -845,8 +849,10 @@ form label, .form-label {
 
 /* ---- Page Header ---- */
 .page-header {
-    background: linear-gradient(135deg, var(--dark), var(--red-dark));
-    padding: 50px 0;
+    background: linear-gradient(135deg, rgba(30,10,10,0.9) 0%, rgba(140,20,40,0.88) 100%),
+                url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200&q=80')
+                center / cover no-repeat;
+    padding: 60px 0;
     text-align: center;
     position: relative;
     overflow: hidden;

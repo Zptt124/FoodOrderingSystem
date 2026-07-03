@@ -1,0 +1,5 @@
+# Database connection configuration
+# Copy this file to database.properties and fill in your own credentials
+db.url=jdbc:mysql://localhost:3306/jade_dragon?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
+db.username=root
+db.password=your_password_here

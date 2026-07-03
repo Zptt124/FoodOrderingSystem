@@ -1,20 +1,38 @@
 package com.jadedragon.util;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DBConnection {
-    private static final String URL = "jdbc:mysql://localhost:3306/jade_dragon"
-            + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8";
-    private static final String USER = "root";
-    private static final String PASSWORD = "hjn180904";
+    private static final String URL;
+    private static final String USER;
+    private static final String PASSWORD;
 
     static {
         try {
+            Properties props = new Properties();
+            InputStream input = DBConnection.class.getClassLoader()
+                    .getResourceAsStream("database.properties");
+            if (input == null) {
+                throw new RuntimeException(
+                    "database.properties not found in classpath. " +
+                    "Copy database.properties.example to database.properties " +
+                    "and configure your database credentials.");
+            }
+            props.load(input);
+
+            URL = props.getProperty("db.url");
+            USER = props.getProperty("db.username");
+            PASSWORD = props.getProperty("db.password");
+
             Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("MySQL JDBC Driver not found", e);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load database configuration", e);
         }
     }
 

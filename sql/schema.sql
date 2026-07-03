@@ -259,7 +259,8 @@ INSERT INTO food_items (name, description, ingredients, nutritional_info, price,
  'Classic milk tea with chewy tapioca pearls. Choose black tea or green tea base.',
  'Tapioca Pearls, Black Tea, Milk Powder, Sugar, Water',
  'Per cup: 350 kcal, 4g Protein, 56g Carbs, 10g Fat',
- 15.00, 'https://images.unsplash.com/photo-1558857563-b371033873b8?w=600&q=80', 4, FALSE, TRUE, 4.6, 234);
+
+ 15.00, 'https://images.unsplash.com/photo-1525803377221-4f6ccdaa5133?w=600&q=80', 4, FALSE, TRUE, 4.6, 234);
 
 -- Chef's Special (category_id=5)
 INSERT INTO food_items (name, description, ingredients, nutritional_info, price, image_url, category_id, is_featured, is_popular, rating, review_count) VALUES

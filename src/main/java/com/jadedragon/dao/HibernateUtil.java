@@ -3,6 +3,9 @@ package com.jadedragon.dao;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.io.InputStream;
+import java.util.Properties;
+
 /**
  * Hibernate Utility Class (Chapter 10).
  * Manages the SessionFactory lifecycle — the factory is heavyweight
@@ -21,9 +24,27 @@ public class HibernateUtil {
 
     static {
         try {
+            // Load database properties (same file used by DBConnection)
+            Properties dbProps = new Properties();
+            InputStream input = HibernateUtil.class.getClassLoader()
+                    .getResourceAsStream("database.properties");
+            if (input == null) {
+                throw new RuntimeException(
+                    "database.properties not found in classpath. " +
+                    "Copy database.properties.example to database.properties " +
+                    "and configure your database credentials.");
+            }
+            dbProps.load(input);
+
             // Load and configure Hibernate from hibernate.cfg.xml
             Configuration cfg = new Configuration();
             cfg.configure("hibernate.cfg.xml");
+
+            // Override connection properties from database.properties
+            cfg.setProperty("hibernate.connection.url", dbProps.getProperty("db.url"));
+            cfg.setProperty("hibernate.connection.username", dbProps.getProperty("db.username"));
+            cfg.setProperty("hibernate.connection.password", dbProps.getProperty("db.password"));
+
             sessionFactory = cfg.buildSessionFactory();
             System.out.println("[HibernateUtil] SessionFactory created successfully.");
         } catch (Exception e) {

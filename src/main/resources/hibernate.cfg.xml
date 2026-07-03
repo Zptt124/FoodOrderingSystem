@@ -8,14 +8,10 @@
     -->
     <session-factory>
         <!-- JDBC Connection Properties -->
+        <!-- Credentials are injected programmatically from database.properties -->
         <property name="hibernate.connection.driver_class">
             com.mysql.cj.jdbc.Driver
         </property>
-        <property name="hibernate.connection.url">
-            jdbc:mysql://localhost:3306/jade_dragon?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Asia/Shanghai&amp;characterEncoding=UTF-8
-        </property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">hjn180904</property>
 
         <!-- Database dialect: tells Hibernate which SQL variant to generate -->
         <property name="hibernate.dialect">
