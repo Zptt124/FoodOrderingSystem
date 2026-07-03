@@ -1,13 +1,29 @@
 package com.jadedragon.model;
 
+import jakarta.persistence.*;
 import java.io.Serializable;
 
+/**
+ * Category entity — maps to "categories" table.
+ * Each category groups food items (e.g., Appetizers, Main Course, Desserts).
+ */
+@Entity
+@Table(name = "categories")
 public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id")
     private int categoryId;
+
+    @Column(name = "name", length = 100, nullable = false)
     private String name;
+
+    @Column(name = "description", length = 500)
     private String description;
+
+    @Column(name = "image_url", length = 500)
     private String imageUrl;
 
     public Category() {}

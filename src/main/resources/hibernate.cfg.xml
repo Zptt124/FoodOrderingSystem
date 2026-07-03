@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hibernate-configuration>
+    <!--
+        Chapter 10: Hibernate configuration file
+        Configures database connection, dialect, and entity mappings.
+        hibernate.hbm2ddl.auto = "update" means Hibernate automatically
+        creates/updates table schema based on @Entity classes.
+    -->
+    <session-factory>
+        <!-- JDBC Connection Properties -->
+        <property name="hibernate.connection.driver_class">
+            com.mysql.cj.jdbc.Driver
+        </property>
+        <property name="hibernate.connection.url">
+            jdbc:mysql://localhost:3306/jade_dragon?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Asia/Shanghai&amp;characterEncoding=UTF-8
+        </property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">hjn180904</property>
+
+        <!-- Database dialect: tells Hibernate which SQL variant to generate -->
+        <property name="hibernate.dialect">
+            org.hibernate.dialect.MySQLDialect
+        </property>
+
+        <!--
+            hbm2ddl.auto strategies:
+            - create: drop-and-recreate schema each time (DEVELOPMENT ONLY)
+            - update: auto-update schema without dropping data (safest for dev)
+            - validate: check schema matches entities, fail if not
+            - none: do nothing (production)
+        -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <!-- Show generated SQL in console for debugging -->
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+
+        <!--
+            Entity class registrations (Chapter 10: @Entity annotation)
+            Each mapping tells Hibernate which Java class maps to which DB table.
+        -->
+        <mapping class="com.jadedragon.model.User"/>
+        <mapping class="com.jadedragon.model.FoodItem"/>
+        <mapping class="com.jadedragon.model.Category"/>
+        <mapping class="com.jadedragon.model.Order"/>
+        <mapping class="com.jadedragon.model.OrderItem"/>
+    </session-factory>
+</hibernate-configuration>

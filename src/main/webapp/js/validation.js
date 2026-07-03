@@ -165,4 +165,56 @@ document.addEventListener('DOMContentLoaded', function () {
         }, false);
     });
 
+    // ============ Checkout Form Validation (Assignment 2c) ============
+    const checkoutForm = document.getElementById('checkoutForm');
+    if (checkoutForm) {
+        // Order notes character counter
+        const notesTextarea = checkoutForm.querySelector('#orderNotes');
+        const charCounter    = checkoutForm.querySelector('#notesCharCount');
+        const maxChars       = 200;
+
+        if (notesTextarea && charCounter) {
+            // Update character counter on page load
+            function updateCharCounter() {
+                var current = notesTextarea.value.length;
+                charCounter.textContent = current + '/' + maxChars;
+                if (current > maxChars) {
+                    charCounter.style.color = 'var(--red)';
+                } else if (current > maxChars * 0.8) {
+                    charCounter.style.color = 'var(--gold)';
+                } else {
+                    charCounter.style.color = 'var(--gray-500)';
+                }
+            }
+            notesTextarea.addEventListener('input', updateCharCounter);
+            updateCharCounter();
+        }
+
+        checkoutForm.addEventListener('submit', function (e) {
+            let hasError = false;
+
+            // Validate notes length
+            if (notesTextarea && notesTextarea.value.length > maxChars) {
+                notesTextarea.classList.add('is-invalid');
+                hasError = true;
+            } else if (notesTextarea) {
+                notesTextarea.classList.remove('is-invalid');
+            }
+
+            // Validate cart is not empty (server safeguard — cart is also checked server-side)
+            var cartTable = document.querySelector('.cart-table');
+            if (!cartTable) {
+                alert('Your cart is empty. Please add items before checking out.');
+                e.preventDefault();
+                return;
+            }
+
+            if (hasError) {
+                e.preventDefault();
+                const firstError = checkoutForm.querySelector('.is-invalid');
+                if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    }
+
 });

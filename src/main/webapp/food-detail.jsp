@@ -3,6 +3,19 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ include file="header.jsp" %>
 
+<%--
+    Chapter 9: JSP Bean Tags Demonstration
+    <jsp:useBean> — finds or creates a bean in the specified scope.
+    Here we look up the "food" attribute that FoodDetailServlet placed in request scope.
+    This is equivalent to: FoodItem food = (FoodItem) request.getAttribute("food");
+
+    <jsp:getProperty> — reads a bean property, equivalent to food.getName().
+    <jsp:setProperty> — sets a bean property from request parameters or explicit values.
+
+    These three tags are the core of JSP Bean usage taught in Chapter 9.
+--%>
+<jsp:useBean id="food" class="com.jadedragon.model.FoodItem" scope="request" />
+
 <%
     if (request.getAttribute("food") == null) {
         response.sendRedirect("MenuServlet");
@@ -17,7 +30,10 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
                 <li class="breadcrumb-item"><a href="MenuServlet">Menu</a></li>
-                <li class="breadcrumb-item active" aria-current="page">${food.name}</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <%-- Chapter 9: getProperty reads the bean's name property --%>
+                    <jsp:getProperty name="food" property="name" />
+                </li>
             </ol>
         </nav>
 
@@ -26,7 +42,8 @@
             <div class="col-lg-6 mb-4">
                 <c:choose>
                     <c:when test="${not empty food.imageUrl}">
-                        <img src="${food.imageUrl}" alt="${food.name}"
+                        <img src="${food.imageUrl}"
+                             alt="<jsp:getProperty name='food' property='name' />"
                              style="width: 100%; border-radius: var(--radius-md); object-fit: cover; max-height: 420px;"
                              onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'img-fallback\' style=\'min-height: 350px; border-radius: var(--radius-md); font-size: 5rem;\'>&#x1F372;</div>';">
                     </c:when>
@@ -40,9 +57,13 @@
 
             <!-- Food Info -->
             <div class="col-lg-6">
-                <h2 style="font-weight: 700; color: var(--dark);">${food.name}</h2>
+                <%-- Chapter 9: getProperty reads the bean's name property --%>
+                <h2 style="font-weight: 700; color: var(--dark);">
+                    <jsp:getProperty name="food" property="name" />
+                </h2>
 
                 <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                    <%-- EL expressions are an alternative to getProperty — both work --%>
                     <span class="badge" style="background: var(--gold); color: var(--dark); font-size: 0.85rem; padding: 6px 14px; border-radius: var(--radius-full);">
                         ${food.categoryName}
                     </span>

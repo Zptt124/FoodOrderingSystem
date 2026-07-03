@@ -40,12 +40,56 @@ public class CartServlet extends HttpServlet {
         }
         if ("clear".equals(action)) {
             session.setAttribute("cart", null);
+            session.setAttribute("cartCount", 0);
+            session.setAttribute("cartTotal", java.math.BigDecimal.ZERO);
             response.sendRedirect("cart.jsp");
             return;
         }
 
+        // Pre-compute cart summary data in the servlet (not in JSP scriptlets).
+        // This follows Chapter 6 best practice: keep Java logic out of JSP.
+        computeCartSummary(session, request);
+
         RequestDispatcher rd = request.getRequestDispatcher("cart.jsp");
         rd.forward(request, response);
+    }
+
+    /**
+     * Pre-computes cart summary values and stores them as request attributes
+     * so cart.jsp can use EL/JSTL instead of Java scriptlets.
+     * Chapter 6 best practice: JSP is for display, Java logic goes in servlets.
+     */
+    private void computeCartSummary(HttpSession session, HttpServletRequest request) {
+        @SuppressWarnings("unchecked")
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        if (cart == null || cart.isEmpty()) {
+            request.setAttribute("cartSubtotal", java.math.BigDecimal.ZERO);
+            request.setAttribute("deliveryFee", new java.math.BigDecimal("3.00"));
+            request.setAttribute("cartTotal", java.math.BigDecimal.ZERO);
+            request.setAttribute("isFreeDelivery", false);
+            request.setAttribute("amountToFree", new java.math.BigDecimal("50.00"));
+            return;
+        }
+
+        java.math.BigDecimal subtotal = cart.stream()
+                .map(CartItem::getSubtotal)
+                .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+
+        java.math.BigDecimal freeThreshold = new java.math.BigDecimal("50.00");
+        java.math.BigDecimal deliveryFee = subtotal.compareTo(freeThreshold) > 0
+                ? java.math.BigDecimal.ZERO
+                : new java.math.BigDecimal("3.00");
+        java.math.BigDecimal total = subtotal.add(deliveryFee);
+        boolean isFreeDelivery = subtotal.compareTo(freeThreshold) > 0;
+        java.math.BigDecimal amountToFree = isFreeDelivery
+                ? java.math.BigDecimal.ZERO
+                : freeThreshold.subtract(subtotal);
+
+        request.setAttribute("cartSubtotal", subtotal);
+        request.setAttribute("deliveryFee", deliveryFee);
+        request.setAttribute("cartTotal", total);
+        request.setAttribute("isFreeDelivery", isFreeDelivery);
+        request.setAttribute("amountToFree", amountToFree);
     }
 
     @Override

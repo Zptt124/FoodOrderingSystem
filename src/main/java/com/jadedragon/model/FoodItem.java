@@ -1,24 +1,61 @@
 package com.jadedragon.model;
 
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+/**
+ * FoodItem entity — maps to "food_items" table.
+ * Demonstrates JPA annotations: @Entity, @Table, @Id, @Column.
+ * Each FoodItem object corresponds to one row in the food_items table.
+ */
+@Entity
+@Table(name = "food_items")
 public class FoodItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "food_id")
     private int foodId;
+
+    @Column(name = "name", length = 200, nullable = false)
     private String name;
+
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
+
+    @Column(name = "ingredients", columnDefinition = "TEXT")
     private String ingredients;
+
+    @Column(name = "nutritional_info", columnDefinition = "TEXT")
     private String nutritionalInfo;
+
+    @Column(name = "price", precision = 10, scale = 2, nullable = false)
     private BigDecimal price;
+
+    @Column(name = "image_url", length = 500)
     private String imageUrl;
+
+    @Column(name = "category_id")
     private int categoryId;
-    private String categoryName;    // joined from categories table
+
+    @Transient  // This field is JOINed, not stored directly in food_items
+    private String categoryName;
+
+    @Column(name = "rating")
     private double rating;
+
+    @Column(name = "review_count")
     private int reviewCount;
+
+    @Column(name = "is_featured")
     private boolean isFeatured;
+
+    @Column(name = "is_popular")
     private boolean isPopular;
+
+    @Column(name = "is_available")
     private boolean isAvailable;
 
     public FoodItem() {}

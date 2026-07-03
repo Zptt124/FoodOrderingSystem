@@ -1,20 +1,50 @@
 package com.jadedragon.model;
 
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * Order entity — maps to "orders" table.
+ * Each Order object represents one customer order transaction.
+ *
+ * Demonstrates Chapter 10 JPA annotations:
+ *   @Entity, @Table, @Id, @GeneratedValue, @Column, @Transient
+ *
+ * Note: @Transient marks fields that should NOT be persisted
+ * (they are populated via JOIN queries or calculated at runtime).
+ */
+@Entity
+@Table(name = "orders")
 public class Order implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
     private int orderId;
+
+    @Column(name = "user_id", nullable = false)
     private int userId;
-    private String username;        // joined
+
+    @Transient  // Joined from users table, not stored in orders
+    private String username;
+
+    @Column(name = "total_price", precision = 10, scale = 2)
     private BigDecimal totalPrice;
-    private String status;          // pending, confirmed, preparing, ready, completed, cancelled
+
+    @Column(name = "status", length = 20)
+    private String status;  // pending, confirmed, preparing, ready, completed, cancelled
+
+    @Column(name = "order_date", insertable = false, updatable = false)
     private Timestamp orderDate;
+
+    @Column(name = "notes", length = 500)
     private String notes;
+
+    @Transient  // Populated by OrderDAO via separate query, not in orders table
     private List<OrderItem> items;
 
     public Order() {}

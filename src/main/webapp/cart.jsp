@@ -2,25 +2,17 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ include file="header.jsp" %>
-<%@ page import="java.util.List, com.jadedragon.model.CartItem, java.math.BigDecimal" %>
+<%--
+    Chapter 6 best practice: JSP is for display, Java logic is in CartServlet.
+    All cart summary data (subtotal, deliveryFee, cartTotal, isFreeDelivery, amountToFree)
+    is pre-computed by CartServlet.computeCartSummary() and stored as request attributes.
+    This JSP uses ONLY JSTL (c:if, c:choose, c:forEach) and EL (${...}) — no scriptlets.
+--%>
 <%
     if (session.getAttribute("user") == null) {
         response.sendRedirect("login.jsp?redirect=cart.jsp");
         return;
     }
-    List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-
-    // Calculate cart totals
-    BigDecimal subtotal = BigDecimal.ZERO;
-    if (cart != null) {
-        for (CartItem ci : cart) {
-            subtotal = subtotal.add(ci.getSubtotal());
-        }
-    }
-    BigDecimal deliveryFee = subtotal.compareTo(new BigDecimal("50.00")) > 0
-        ? BigDecimal.ZERO
-        : new BigDecimal("3.00");
-    BigDecimal total = subtotal.add(deliveryFee);
 %>
 
 <!-- Page Header -->
@@ -34,7 +26,7 @@
 <section style="background: var(--cream); min-height: 60vh; padding: 40px 0;">
 <div class="container">
     <c:choose>
-        <%-- Cart has items --%>
+        <%-- Cart has items — check session cart via EL --%>
         <c:when test="${not empty sessionScope.cart}">
             <div class="row">
                 <!-- Cart Items -->
@@ -108,7 +100,7 @@
                     </div>
                 </div>
 
-                <!-- Cart Summary Sidebar -->
+                <!-- Cart Summary Sidebar — uses request attributes from CartServlet -->
                 <div class="col-lg-4">
                     <div class="cart-summary">
                         <h4><i class="bi bi-receipt me-2"></i>Order Summary</h4>
@@ -127,46 +119,54 @@
 
                         <div class="d-flex justify-content-between mb-2" style="font-size:0.92rem;">
                             <span>Subtotal</span>
-                            <span>RM <fmt:formatNumber value="<%= subtotal %>" pattern="#0.00"/></span>
+                            <span>RM <fmt:formatNumber value="${cartSubtotal}" pattern="#0.00"/></span>
                         </div>
 
                         <div class="d-flex justify-content-between mb-2" style="font-size:0.92rem;">
                             <span>Delivery Fee</span>
                             <span>
-                                <% if (deliveryFee.compareTo(BigDecimal.ZERO) == 0) { %>
-                                    <span class="text-success fw-bold">FREE</span>
-                                    <small class="text-muted text-decoration-line-through ms-1">RM 3.00</small>
-                                <% } else { %>
-                                    RM <%= String.format("%.2f", deliveryFee.doubleValue()) %>
-                                <% } %>
+                                <c:choose>
+                                    <c:when test="${isFreeDelivery}">
+                                        <span class="text-success fw-bold">FREE</span>
+                                        <small class="text-muted text-decoration-line-through ms-1">RM 3.00</small>
+                                    </c:when>
+                                    <c:otherwise>
+                                        RM <fmt:formatNumber value="${deliveryFee}" pattern="#0.00"/>
+                                    </c:otherwise>
+                                </c:choose>
                             </span>
                         </div>
 
-                        <% if (subtotal.compareTo(new BigDecimal("50.00")) > 0) { %>
-                            <small class="text-success d-block mb-2">
-                                <i class="bi bi-check-circle-fill"></i> Free delivery unlocked! Orders over RM 50 qualify.
-                            </small>
-                        <% } else { %>
-                            <small class="text-muted d-block mb-2">
-                                <i class="bi bi-info-circle"></i> Add RM <%= String.format("%.2f", new BigDecimal("50.00").subtract(subtotal)) %> more for free delivery.
-                            </small>
-                        <% } %>
+                        <c:choose>
+                            <c:when test="${isFreeDelivery}">
+                                <small class="text-success d-block mb-2">
+                                    <i class="bi bi-check-circle-fill"></i> Free delivery unlocked! Orders over RM 50 qualify.
+                                </small>
+                            </c:when>
+                            <c:otherwise>
+                                <small class="text-muted d-block mb-2">
+                                    <i class="bi bi-info-circle"></i> Add RM <fmt:formatNumber value="${amountToFree}" pattern="#0.00"/> more for free delivery.
+                                </small>
+                            </c:otherwise>
+                        </c:choose>
 
                         <hr>
 
                         <div class="d-flex justify-content-between mb-3" style="font-size:1.2rem; font-weight:700;">
                             <span>Total</span>
-                            <span style="color:var(--red);">RM <fmt:formatNumber value="<%= total %>" pattern="#0.00"/></span>
+                            <span style="color:var(--red);">RM <fmt:formatNumber value="${cartTotal}" pattern="#0.00"/></span>
                         </div>
 
-                        <form action="OrderServlet" method="post">
+                        <form action="OrderServlet" method="post" id="checkoutForm">
                             <input type="hidden" name="action" value="checkout">
                             <div class="mb-3">
                                 <label for="orderNotes" class="form-label">
                                     <i class="bi bi-pencil"></i> Order Notes
                                 </label>
                                 <textarea name="notes" id="orderNotes" class="form-control" rows="2"
+                                          maxlength="200"
                                           placeholder="Special requests, allergies, etc.">${param.notes}</textarea>
+                                <small class="text-muted mt-1 d-block" id="notesCharCount">0/200</small>
                             </div>
                             <button type="submit" class="btn btn-primary btn-lg w-100">
                                 <i class="bi bi-check-circle"></i> Place Order
@@ -194,7 +194,7 @@
 </div>
 </section>
 
-<!-- Quantity +/- button handlers -->
+<!-- Quantity +/- button handlers (JavaScript for client-side interaction) -->
 <script>
 (function() {
     document.querySelectorAll('.qty-dec').forEach(function(btn) {

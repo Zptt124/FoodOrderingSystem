@@ -1,17 +1,49 @@
 package com.jadedragon.model;
 
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+/**
+ * User entity — maps to the "users" table in MySQL.
+ * Demonstrates JPA annotations (Chapter 10):
+ *   @Entity  — marks this as a persistent entity
+ *   @Table   — maps to a specific database table
+ *   @Id      — primary key
+ *   @GeneratedValue — auto-increment strategy
+ *   @Column  — custom column mappings
+ *
+ * Also meets JavaBean requirements (Chapter 9):
+ *   1. public no-arg constructor
+ *   2. private fields with public getters/setters
+ *   3. implements Serializable
+ */
+@Entity
+@Table(name = "users")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private int userId;
+
+    @Column(name = "username", length = 50, nullable = false, unique = true)
     private String username;
+
+    @Column(name = "email", length = 100, nullable = false, unique = true)
     private String email;
+
+    @Column(name = "password", length = 255, nullable = false)
     private String password;
+
+    @Column(name = "phone", length = 20)
     private String phone;
+
+    @Column(name = "role", length = 20)
     private String role;       // "customer" or "admin"
+
+    @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
 
     public User() {}
