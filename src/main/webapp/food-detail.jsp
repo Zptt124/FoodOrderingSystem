@@ -137,11 +137,12 @@
                             <label for="addOns" class="form-label">Add-ons</label>
                             <select name="addOns" id="addOns" class="form-select">
                                 <option value="">None</option>
-                                <option value="Extra Chili">Extra Chili</option>
+                                <option value="Extra Chili (+RM 1)">Extra Chili (+RM 1)</option>
                                 <option value="No MSG">No MSG</option>
-                                <option value="Extra Sauce">Extra Sauce</option>
-                                <option value="Add Rice (+RM3)">Add Rice (+RM3)</option>
-                                <option value="Extra Cheese">Extra Cheese</option>
+                                <option value="Extra Sauce (+RM 1)">Extra Sauce (+RM 1)</option>
+                                <option value="Extra Cheese (+RM 1)">Extra Cheese (+RM 1)</option>
+                                <option value="Add Rice (+RM 3)">Add Rice (+RM 3)</option>
+                                <option value="Double Portion (+RM 5)">Double Portion (+RM 5)</option>
                             </select>
                         </div>
                         <div class="col-auto">

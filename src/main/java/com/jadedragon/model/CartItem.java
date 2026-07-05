@@ -31,6 +31,24 @@ public class CartItem implements Serializable {
         return unitPrice.multiply(BigDecimal.valueOf(quantity));
     }
 
+    /**
+     * Parse the surcharge amount from an add-on string.
+     * Supports formats: "Extra Chili (+RM 1)", "Add Rice (+RM3)", "No MSG" (no surcharge).
+     * @param addOns the add-on description string
+     * @return the surcharge amount in RM, or BigDecimal.ZERO if none found
+     */
+    public static BigDecimal parseAddOnSurcharge(String addOns) {
+        if (addOns == null || addOns.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("\\+RM\\s*(\\d+)")
+                .matcher(addOns);
+        if (m.find()) {
+            return new BigDecimal(m.group(1));
+        }
+        return BigDecimal.ZERO;
+    }
+
     public int getFoodId() { return foodId; }
     public void setFoodId(int foodId) { this.foodId = foodId; }
 

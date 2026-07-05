@@ -46,4 +46,26 @@ public class AdminOrderServlet extends HttpServlet {
         RequestDispatcher rd = request.getRequestDispatcher("admin/orders.jsp");
         rd.forward(request, response);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+
+        String action = request.getParameter("action");
+        if ("updateStatus".equals(action)) {
+            int orderId = Integer.parseInt(request.getParameter("orderId"));
+            String newStatus = request.getParameter("newStatus");
+            OrderDAO orderDAO = new OrderDAO();
+            orderDAO.updateStatus(orderId, newStatus);
+        }
+
+        // Redirect back to order list, preserving status filter if present
+        String redirectUrl = "AdminOrderServlet";
+        String statusFilter = request.getParameter("statusFilter");
+        if (statusFilter != null && !statusFilter.isEmpty()) {
+            redirectUrl += "?status=" + statusFilter;
+        }
+        response.sendRedirect(redirectUrl);
+    }
 }

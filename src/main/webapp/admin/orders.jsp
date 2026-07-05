@@ -94,6 +94,29 @@
                     </div>
                     <p class="mt-3 mb-1"><strong>Notes:</strong> ${empty order.notes ? 'None' : order.notes}</p>
                     <p><small class="text-muted">Ordered: <fmt:formatDate value="${order.orderDate}" pattern="yyyy-MM-dd HH:mm:ss"/></small></p>
+
+                    <!-- Status Update Form -->
+                    <div class="mt-3 p-3" style="background: var(--cream); border-radius: var(--radius-sm);">
+                        <form action="${pageContext.request.contextPath}/AdminOrderServlet" method="post" class="d-flex align-items-center gap-2">
+                            <input type="hidden" name="action" value="updateStatus">
+                            <input type="hidden" name="orderId" value="${order.orderId}">
+                            <input type="hidden" name="statusFilter" value="${currentFilter}">
+                            <label for="newStatus" class="form-label mb-0 fw-semibold" style="white-space: nowrap;">
+                                <i class="bi bi-arrow-repeat" style="color: var(--red);"></i> Update Status:
+                            </label>
+                            <select name="newStatus" id="newStatus" class="form-select form-select-sm" style="max-width: 180px;">
+                                <option value="pending" ${order.status eq 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="confirmed" ${order.status eq 'confirmed' ? 'selected' : ''}>Confirmed</option>
+                                <option value="preparing" ${order.status eq 'preparing' ? 'selected' : ''}>Preparing</option>
+                                <option value="ready" ${order.status eq 'ready' ? 'selected' : ''}>Ready</option>
+                                <option value="completed" ${order.status eq 'completed' ? 'selected' : ''}>Completed</option>
+                                <option value="cancelled" ${order.status eq 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-primary" onclick="return confirm('Update order #${order.orderId} status?')">
+                                <i class="bi bi-check-lg"></i> Update
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </c:if>

@@ -128,6 +128,11 @@ public class CartServlet extends HttpServlet {
                 return;
             }
 
+            // Calculate unit price including add-on surcharge
+            // e.g. "Extra Chili (+RM 1)" → base price + RM 1
+            BigDecimal surcharge = CartItem.parseAddOnSurcharge(addOns);
+            BigDecimal effectivePrice = food.getPrice().add(surcharge);
+
             @SuppressWarnings("unchecked")
             List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
             if (cart == null) {
@@ -148,7 +153,7 @@ public class CartServlet extends HttpServlet {
 
             if (!found) {
                 cart.add(new CartItem(foodId, food.getName(),
-                        food.getPrice(), quantity, addOns));
+                        effectivePrice, quantity, addOns));
             }
 
             session.setAttribute("cart", cart);

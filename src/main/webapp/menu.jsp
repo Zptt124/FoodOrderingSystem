@@ -131,6 +131,8 @@
                                                         <option value="Extra Chili (+RM 1)">Extra Chili (+RM 1)</option>
                                                         <option value="No MSG">No MSG</option>
                                                         <option value="Extra Sauce (+RM 1)">Extra Sauce (+RM 1)</option>
+                                                        <option value="Extra Cheese (+RM 1)">Extra Cheese (+RM 1)</option>
+                                                        <option value="Add Rice (+RM 3)">Add Rice (+RM 3)</option>
                                                         <option value="Double Portion (+RM 5)">Double Portion (+RM 5)</option>
                                                     </select>
                                                 </div>
