@@ -20,20 +20,14 @@ import java.util.List;
 public class OrderServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    // Delivery configuration read from web.xml init-params (ServletConfig)
-    // Demonstrates Chapter 4: Servlet lifecycle — init() runs once at creation
+    // Read from web.xml <init-param> (ServletConfig)
     private BigDecimal deliveryFeeAmount = new BigDecimal("3.00");
     private BigDecimal freeDeliveryThreshold = new BigDecimal("50.00");
 
-    /**
-     * Servlet lifecycle: init(ServletConfig) is called ONCE when the servlet
-     * is first created by the container. Reads init-params from web.xml.
-     * Chapter 4: Servlet Lifecycle — init() → service() → destroy() → GC
-     */
+    // Servlet lifecycle: init() is called once when servlet loads
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        // Read per-servlet init parameters from web.xml (ServletConfig)
         String feeParam = config.getInitParameter("deliveryFeeAmount");
         String thresholdParam = config.getInitParameter("freeDeliveryThreshold");
         if (feeParam != null && !feeParam.isEmpty()) {
@@ -42,11 +36,6 @@ public class OrderServlet extends HttpServlet {
         if (thresholdParam != null && !thresholdParam.isEmpty()) {
             this.freeDeliveryThreshold = new BigDecimal(thresholdParam);
         }
-        // Log ServletContext parameter for demonstration
-        String restaurantName = config.getServletContext().getInitParameter("restaurantName");
-        System.out.println("[OrderServlet] Initialized for: " + restaurantName);
-        System.out.println("[OrderServlet] Delivery fee: RM " + deliveryFeeAmount
-                + ", Free delivery threshold: RM " + freeDeliveryThreshold);
     }
 
     @Override

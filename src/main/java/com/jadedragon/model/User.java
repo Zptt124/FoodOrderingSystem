@@ -4,20 +4,8 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-/**
- * User entity — maps to the "users" table in MySQL.
- * Demonstrates JPA annotations (Chapter 10):
- *   @Entity  — marks this as a persistent entity
- *   @Table   — maps to a specific database table
- *   @Id      — primary key
- *   @GeneratedValue — auto-increment strategy
- *   @Column  — custom column mappings
- *
- * Also meets JavaBean requirements (Chapter 9):
- *   1. public no-arg constructor
- *   2. private fields with public getters/setters
- *   3. implements Serializable
- */
+// Maps to "users" table in MySQL. Also meets JavaBean rules:
+// 1. public no-arg constructor 2. private fields + getters/setters 3. Serializable
 @Entity
 @Table(name = "users")
 public class User implements Serializable {

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <hibernate-configuration>
     <!--
-        Chapter 10: Hibernate configuration file
-        Configures database connection, dialect, and entity mappings.
-        hibernate.hbm2ddl.auto = "update" means Hibernate automatically
-        creates/updates table schema based on @Entity classes.
+        Hibernate configuration — connection, dialect, entity mappings.
+        hbm2ddl.auto = "update" auto-creates/updates table schema.
     -->
     <session-factory>
         <!-- JDBC Connection Properties -->
@@ -19,11 +17,7 @@
         </property>
 
         <!--
-            hbm2ddl.auto strategies:
-            - create: drop-and-recreate schema each time (DEVELOPMENT ONLY)
-            - update: auto-update schema without dropping data (safest for dev)
-            - validate: check schema matches entities, fail if not
-            - none: do nothing (production)
+            hbm2ddl.auto: "update" syncs schema without dropping data
         -->
         <property name="hibernate.hbm2ddl.auto">update</property>
 
@@ -32,8 +26,7 @@
         <property name="hibernate.format_sql">true</property>
 
         <!--
-            Entity class registrations (Chapter 10: @Entity annotation)
-            Each mapping tells Hibernate which Java class maps to which DB table.
+            Entity class registrations — one mapping per @Entity class
         -->
         <mapping class="com.jadedragon.model.User"/>
         <mapping class="com.jadedragon.model.FoodItem"/>

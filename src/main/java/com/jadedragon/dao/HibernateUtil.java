@@ -6,69 +6,46 @@ import org.hibernate.cfg.Configuration;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * Hibernate Utility Class (Chapter 10).
- * Manages the SessionFactory lifecycle — the factory is heavyweight
- * and should be created ONCE per application.
- *
- * Hibernate flow:
- *   Configuration → SessionFactory → Session → Transaction → commit → close
- *
- * This provides an ALTERNATIVE data access layer alongside the JDBC DAOs,
- * demonstrating the ORM (Object-Relational Mapping) approach.
- * JDBC vs Hibernate comparison taught in Chapter 10.
- */
+// Hibernate SessionFactory — created once, shared across DAOs
 public class HibernateUtil {
 
     private static final SessionFactory sessionFactory;
 
     static {
         try {
-            // Load database properties (same file used by DBConnection)
             Properties dbProps = new Properties();
             InputStream input = HibernateUtil.class.getClassLoader()
                     .getResourceAsStream("database.properties");
             if (input == null) {
                 throw new RuntimeException(
-                    "database.properties not found in classpath. " +
-                    "Copy database.properties.example to database.properties " +
-                    "and configure your database credentials.");
+                    "database.properties not found. Copy database.properties.example " +
+                    "to database.properties and fill in your credentials.");
             }
             dbProps.load(input);
 
-            // Load and configure Hibernate from hibernate.cfg.xml
             Configuration cfg = new Configuration();
             cfg.configure("hibernate.cfg.xml");
 
-            // Override connection properties from database.properties
             cfg.setProperty("hibernate.connection.url", dbProps.getProperty("db.url"));
             cfg.setProperty("hibernate.connection.username", dbProps.getProperty("db.username"));
             cfg.setProperty("hibernate.connection.password", dbProps.getProperty("db.password"));
 
             sessionFactory = cfg.buildSessionFactory();
-            System.out.println("[HibernateUtil] SessionFactory created successfully.");
+            System.out.println("[Hibernate] SessionFactory ready.");
         } catch (Exception e) {
-            System.err.println("[HibernateUtil] Failed to create SessionFactory: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("[Hibernate] Error: " + e.getMessage());
             throw new ExceptionInInitializerError(e);
         }
     }
 
-    /**
-     * Returns the singleton SessionFactory instance.
-     * SessionFactory is thread-safe and shared across the application.
-     */
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 
-    /**
-     * Clean shutdown — close SessionFactory when the application shuts down.
-     */
     public static void shutdown() {
         if (sessionFactory != null && !sessionFactory.isClosed()) {
             sessionFactory.close();
-            System.out.println("[HibernateUtil] SessionFactory closed.");
+            System.out.println("[Hibernate] SessionFactory closed.");
         }
     }
 }

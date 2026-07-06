@@ -6,16 +6,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
-/**
- * Order entity — maps to "orders" table.
- * Each Order object represents one customer order transaction.
- *
- * Demonstrates Chapter 10 JPA annotations:
- *   @Entity, @Table, @Id, @GeneratedValue, @Column, @Transient
- *
- * Note: @Transient marks fields that should NOT be persisted
- * (they are populated via JOIN queries or calculated at runtime).
- */
+// Maps to "orders" table
 @Entity
 @Table(name = "orders")
 public class Order implements Serializable {

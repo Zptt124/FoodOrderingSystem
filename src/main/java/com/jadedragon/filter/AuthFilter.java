@@ -33,7 +33,7 @@ public class AuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) resp;
         String path = request.getRequestURI().substring(request.getContextPath().length());
 
-        // Check admin paths
+        // admin area check
         for (String adminPath : ADMIN_PATHS) {
             if (path.startsWith(adminPath)) {
                 HttpSession session = request.getSession(false);
@@ -50,7 +50,7 @@ public class AuthFilter implements Filter {
             }
         }
 
-        // Check if path needs authentication
+        // check if path is public
         boolean needsAuth = true;
         for (String publicPath : PUBLIC_PATHS) {
             if (path.startsWith(publicPath) || path.equals(publicPath)) {
@@ -59,7 +59,7 @@ public class AuthFilter implements Filter {
             }
         }
 
-        // Check static resources
+        // static files
         if (path.contains(".") &&
             (path.endsWith(".css") || path.endsWith(".js") ||
              path.endsWith(".png") || path.endsWith(".jpg") ||

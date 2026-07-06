@@ -3,24 +3,18 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ include file="header.jsp" %>
 
-<!-- ============================================
-     Page Header
-     ============================================ -->
 <section class="page-header">
     <div class="container">
         <h1>Our Menu</h1>
-        <p>Explore our carefully crafted selection of authentic Chinese dishes, made fresh with the finest ingredients.</p>
+        <p>Explore authentic Chinese dishes made fresh with the finest ingredients.</p>
     </div>
 </section>
 
-<!-- ============================================
-     Menu Content
-     ============================================ -->
 <section class="section" style="background: var(--cream);">
     <div class="container">
 
-        <!-- Search Bar -->
-        <div class="row justify-content-center mb-5">
+        <!-- Search -->
+        <div class="row justify-content-center mb-4">
             <div class="col-lg-6 col-md-8">
                 <form action="MenuServlet" method="get" class="search-bar w-100 mx-auto">
                     <span class="search-icon"><i class="bi bi-search"></i></span>
@@ -30,8 +24,8 @@
             </div>
         </div>
 
-        <!-- Category Filter Tabs -->
-        <div class="d-flex flex-wrap justify-content-center gap-2 mb-5">
+        <!-- Category tabs -->
+        <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
             <a href="MenuServlet" class="btn ${empty selectedCategory || selectedCategory == '' ? 'btn-primary' : 'btn-outline-primary'}">
                 <i class="bi bi-grid-3x3-gap-fill me-1"></i> All
             </a>
@@ -43,32 +37,25 @@
             </c:forEach>
         </div>
 
-        <!-- Add to Cart Success Message -->
         <c:if test="${not empty param.added}">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="bi bi-check-circle-fill me-2"></i>
-                <strong>Success!</strong> Item has been added to your cart.
+                <strong>Added to cart!</strong>
                 <a href="cart.jsp" class="alert-link ms-2">View Cart <i class="bi bi-arrow-right-short"></i></a>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         </c:if>
 
-        <!-- Food Items Grid -->
-        <div class="row">
+        <div class="row g-4">
             <c:choose>
                 <c:when test="${not empty foodItems}">
-                    <c:forEach var="item" items="${foodItems}" varStatus="loop">
-                        <div class="col-lg-4 col-md-6 mb-4">
+                    <c:forEach var="item" items="${foodItems}">
+                        <div class="col-lg-4 col-md-6">
                             <div class="food-card h-100">
                                 <div class="food-card-img">
-                                    <c:choose>
-                                        <c:when test="${not empty item.imageUrl}">
-                                            <img src="${item.imageUrl}" alt="${item.name}">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div class="food-card-placeholder" style="height: 220px; font-size: 3.5rem;">&#127858;</div>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <img src="${pageContext.request.contextPath}/${item.imageUrl}" alt="${item.name}"
+                                         loading="lazy"
+                                         >
                                     <span class="category-badge">${item.categoryName}</span>
                                     <c:if test="${item.popular}">
                                         <span class="badge-overlay">

@@ -4,11 +4,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-/**
- * FoodItem entity — maps to "food_items" table.
- * Demonstrates JPA annotations: @Entity, @Table, @Id, @Column.
- * Each FoodItem object corresponds to one row in the food_items table.
- */
+// Maps to "food_items" table
 @Entity
 @Table(name = "food_items")
 public class FoodItem implements Serializable {
@@ -40,7 +36,7 @@ public class FoodItem implements Serializable {
     @Column(name = "category_id")
     private int categoryId;
 
-    @Transient  // This field is JOINed, not stored directly in food_items
+    @Transient // not stored in DB, loaded via JOIN
     private String categoryName;
 
     @Column(name = "rating")

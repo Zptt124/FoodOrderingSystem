@@ -14,11 +14,11 @@
             <div class="col-lg-4 mb-4">
                 <h5>Quick Links</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-1"><a href="home.jsp">Home</a></li>
-                    <li class="mb-1"><a href="MenuServlet">Menu</a></li>
-                    <li class="mb-1"><a href="about.jsp">About Us</a></li>
-                    <li class="mb-1"><a href="contact.jsp">Contact</a></li>
-                    <li class="mb-1"><a href="faq.jsp">FAQ</a></li>
+                    <li class="mb-1"><a href="${pageContext.request.contextPath}/home.jsp">Home</a></li>
+                    <li class="mb-1"><a href="${pageContext.request.contextPath}/MenuServlet">Menu</a></li>
+                    <li class="mb-1"><a href="${pageContext.request.contextPath}/about.jsp">About Us</a></li>
+                    <li class="mb-1"><a href="${pageContext.request.contextPath}/contact.jsp">Contact</a></li>
+                    <li class="mb-1"><a href="${pageContext.request.contextPath}/faq.jsp">FAQ</a></li>
                 </ul>
             </div>
             <div class="col-lg-4 mb-4">
@@ -40,6 +40,6 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Custom JS -->
-<script src="js/main.js"></script>
+<script src="${pageContext.request.contextPath}/js/main.js"></script>
 </body>
 </html>

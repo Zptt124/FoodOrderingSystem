@@ -11,10 +11,7 @@ import java.util.List;
 
 public class OrderDAO {
 
-    /**
-     * Create a new order and its items in a transaction.
-     * Returns the generated order ID or -1 on failure.
-     */
+    // Creates order + order_items in a single transaction
     public int createOrder(int userId, BigDecimal totalPrice, List<OrderItem> items, String notes) {
         Connection conn = null;
         PreparedStatement psOrder = null;

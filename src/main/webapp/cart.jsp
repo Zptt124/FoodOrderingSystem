@@ -2,12 +2,6 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ include file="header.jsp" %>
-<%--
-    Chapter 6 best practice: JSP is for display, Java logic is in CartServlet.
-    All cart summary data (subtotal, deliveryFee, cartTotal, isFreeDelivery, amountToFree)
-    is pre-computed by CartServlet.computeCartSummary() and stored as request attributes.
-    This JSP uses ONLY JSTL (c:if, c:choose, c:forEach) and EL (${...}) — no scriptlets.
---%>
 <%
     if (session.getAttribute("user") == null) {
         response.sendRedirect("login.jsp?redirect=cart.jsp");
@@ -26,7 +20,7 @@
 <section style="background: var(--cream); min-height: 60vh; padding: 40px 0;">
 <div class="container">
     <c:choose>
-        <%-- Cart has items — check session cart via EL --%>
+        <%-- Cart has items --%>
         <c:when test="${not empty sessionScope.cart}">
             <div class="row">
                 <!-- Cart Items -->

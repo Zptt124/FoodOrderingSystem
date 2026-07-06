@@ -4,51 +4,36 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          id="WebApp_ID" version="6.0">
 
-    <display-name>Jade Dragon Restaurant - Authentic Chinese Cuisine</display-name>
+    <display-name>Jade Dragon Restaurant</display-name>
 
-    <!-- ============================================
-         ServletContext Parameters (Global / Application-wide)
-         Demonstrated in Chapter 4: ServletConfig vs ServletContext
-         ============================================ -->
+    <!-- ServletContext init params (application-wide) -->
     <context-param>
         <param-name>restaurantName</param-name>
         <param-value>Jade Dragon Restaurant</param-value>
-        <description>Restaurant name used throughout the application</description>
     </context-param>
     <context-param>
         <param-name>currency</param-name>
         <param-value>RM</param-value>
-        <description>Currency symbol for display</description>
     </context-param>
     <context-param>
         <param-name>taxRate</param-name>
         <param-value>0.06</param-value>
-        <description>Tax rate (6% SST) applied to orders</description>
     </context-param>
 
-    <!-- ============================================
-         Servlet Declarations with Init Parameters
-         Demonstrates ServletConfig (per-servlet configuration)
-         Works alongside @WebServlet annotations for URL mapping
-         ============================================ -->
-
-    <!-- OrderServlet: init-params configure delivery fee rules -->
+    <!-- ServletConfig init params (per-servlet) -->
     <servlet>
         <servlet-name>OrderServlet</servlet-name>
         <servlet-class>com.jadedragon.controller.OrderServlet</servlet-class>
         <init-param>
             <param-name>deliveryFeeAmount</param-name>
             <param-value>3.00</param-value>
-            <description>Standard delivery fee in RM</description>
         </init-param>
         <init-param>
             <param-name>freeDeliveryThreshold</param-name>
             <param-value>50.00</param-value>
-            <description>Minimum order amount for free delivery</description>
         </init-param>
     </servlet>
 
-    <!-- ContactServlet -->
     <servlet>
         <servlet-name>ContactServlet</servlet-name>
         <servlet-class>com.jadedragon.controller.ContactServlet</servlet-class>
@@ -63,12 +48,10 @@
         <welcome-file>home.jsp</welcome-file>
     </welcome-file-list>
 
-    <!-- Session Configuration -->
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
 
-    <!-- Error Pages -->
     <error-page>
         <error-code>404</error-code>
         <location>/error/404.jsp</location>
@@ -78,7 +61,6 @@
         <location>/error/500.jsp</location>
     </error-page>
 
-    <!-- JSP Configuration -->
     <jsp-config>
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>
@@ -86,7 +68,6 @@
         </jsp-property-group>
     </jsp-config>
 
-    <!-- MIME Mappings -->
     <mime-mapping>
         <extension>css</extension>
         <mime-type>text/css</mime-type>

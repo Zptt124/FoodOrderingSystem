@@ -8,24 +8,7 @@ import org.hibernate.query.Query;
 
 import java.util.List;
 
-/**
- * Hibernate-based Food DAO (Chapter 10).
- *
- * Demonstrates the Hibernate/ORM approach to CRUD:
- *   - No handwritten SQL — Hibernate generates it from @Entity mappings
- *   - session.persist()  → INSERT
- *   - session.merge()    → UPDATE
- *   - session.remove()   → DELETE
- *   - session.find()     → SELECT by ID
- *   - HQL queries        → SELECT with conditions
- *
- * Compare with FoodDAO.java (JDBC approach) to see the difference:
- *   JDBC: manual SQL, PreparedStatement, ResultSet mapping
- *   Hibernate: object-level operations, automatic SQL generation
- *
- * The flow for each operation:
- *   Configuration → SessionFactory → Session → Transaction → commit → close
- */
+// Hibernate version of FoodDAO — uses Session API instead of raw JDBC
 public class FoodDAOHibernate {
 
     private final SessionFactory sessionFactory;
@@ -34,15 +17,12 @@ public class FoodDAOHibernate {
         this.sessionFactory = HibernateUtil.getSessionFactory();
     }
 
-    /**
-     * Create (INSERT) — equivalent to SQL INSERT INTO.
-     * Hibernate automatically generates the INSERT based on @Entity metadata.
-     */
+    // INSERT - persist() generates SQL automatically
     public boolean add(FoodItem item) {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
             tx = session.beginTransaction();
-            session.persist(item);   // <-- One line! vs ~10 lines of JDBC
+            session.persist(item);
             tx.commit();
             return true;
         } catch (Exception e) {
@@ -52,9 +32,7 @@ public class FoodDAOHibernate {
         }
     }
 
-    /**
-     * Read (SELECT by ID) — find a single entity by primary key.
-     */
+    // SELECT by primary key
     public FoodItem findById(int foodId) {
         try (Session session = sessionFactory.openSession()) {
             return session.find(FoodItem.class, foodId);
@@ -64,10 +42,7 @@ public class FoodDAOHibernate {
         }
     }
 
-    /**
-     * Read (SELECT all) — fetch all available items using HQL.
-     * HQL = Hibernate Query Language — SQL-like but works with entity objects.
-     */
+    // SELECT all available items
     public List<FoodItem> findAll() {
         try (Session session = sessionFactory.openSession()) {
             String hql = "FROM FoodItem WHERE isAvailable = true ORDER BY categoryId, name";
@@ -79,9 +54,7 @@ public class FoodDAOHibernate {
         }
     }
 
-    /**
-     * Read (SELECT by category) — parameterized HQL query.
-     */
+    // SELECT by category_id
     public List<FoodItem> findByCategory(int categoryId) {
         try (Session session = sessionFactory.openSession()) {
             String hql = "FROM FoodItem WHERE categoryId = :catId AND isAvailable = true ORDER BY name";
@@ -94,9 +67,7 @@ public class FoodDAOHibernate {
         }
     }
 
-    /**
-     * Read (SELECT featured) — HQL with conditions.
-     */
+    // SELECT featured items
     public List<FoodItem> findFeatured() {
         try (Session session = sessionFactory.openSession()) {
             String hql = "FROM FoodItem WHERE isFeatured = true AND isAvailable = true ORDER BY foodId";
@@ -109,10 +80,7 @@ public class FoodDAOHibernate {
         }
     }
 
-    /**
-     * Update (UPDATE) — equivalent to SQL UPDATE ... SET ... WHERE.
-     * session.merge() updates the matching row based on primary key.
-     */
+    // UPDATE - merge() matches on primary key
     public boolean update(FoodItem item) {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {
@@ -127,9 +95,7 @@ public class FoodDAOHibernate {
         }
     }
 
-    /**
-     * Delete (DELETE) — equivalent to SQL DELETE FROM ... WHERE.
-     */
+    // DELETE by primary key
     public boolean delete(int foodId) {
         Transaction tx = null;
         try (Session session = sessionFactory.openSession()) {

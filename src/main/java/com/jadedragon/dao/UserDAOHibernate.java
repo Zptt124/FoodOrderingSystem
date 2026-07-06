@@ -8,20 +8,7 @@ import org.hibernate.query.Query;
 
 import java.util.List;
 
-/**
- * Hibernate-based User DAO (Chapter 10).
- *
- * Demonstrates the Hibernate approach to user authentication CRUD.
- * Uses the Hibernate Session API instead of JDBC:
- *   - session.persist(user)   replaces INSERT INTO users ...
- *   - session.find()           replaces SELECT * FROM users WHERE ...
- *   - session.createQuery()    replaces PreparedStatement + ResultSet
- *   - Transaction.commit()     auto-flushes changes to DB
- *
- * Chapter 10 key comparison:
- *   JDBC:  manual SQL strings, manual field-by-field mapping
- *   Hibernate: object-level saves/finds, no SQL needed
- */
+// Hibernate version of UserDAO — uses Session API instead of JDBC
 public class UserDAOHibernate {
 
     private final SessionFactory sessionFactory;

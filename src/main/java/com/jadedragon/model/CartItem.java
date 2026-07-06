@@ -3,10 +3,7 @@ package com.jadedragon.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-/**
- * Shopping cart item stored in HttpSession.
- * Not persisted directly — converted to OrderItem at checkout.
- */
+// Stored in HttpSession, saved to DB as OrderItem at checkout
 public class CartItem implements Serializable {
     private static final long serialVersionUID = 1L;
 

@@ -46,19 +46,14 @@ public class CartServlet extends HttpServlet {
             return;
         }
 
-        // Pre-compute cart summary data in the servlet (not in JSP scriptlets).
-        // This follows Chapter 6 best practice: keep Java logic out of JSP.
+        // Compute cart summary so JSP can use EL
         computeCartSummary(session, request);
 
         RequestDispatcher rd = request.getRequestDispatcher("cart.jsp");
         rd.forward(request, response);
     }
 
-    /**
-     * Pre-computes cart summary values and stores them as request attributes
-     * so cart.jsp can use EL/JSTL instead of Java scriptlets.
-     * Chapter 6 best practice: JSP is for display, Java logic goes in servlets.
-     */
+    // Calculate cart totals and delivery fee for cart.jsp
     private void computeCartSummary(HttpSession session, HttpServletRequest request) {
         @SuppressWarnings("unchecked")
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
@@ -71,9 +66,10 @@ public class CartServlet extends HttpServlet {
             return;
         }
 
-        java.math.BigDecimal subtotal = cart.stream()
-                .map(CartItem::getSubtotal)
-                .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+        java.math.BigDecimal subtotal = java.math.BigDecimal.ZERO;
+        for (CartItem ci : cart) {
+            subtotal = subtotal.add(ci.getSubtotal());
+        }
 
         java.math.BigDecimal freeThreshold = new java.math.BigDecimal("50.00");
         java.math.BigDecimal deliveryFee = subtotal.compareTo(freeThreshold) > 0
@@ -129,7 +125,7 @@ public class CartServlet extends HttpServlet {
             }
 
             // Calculate unit price including add-on surcharge
-            // e.g. "Extra Chili (+RM 1)" → base price + RM 1
+            // add surcharge from add-on, e.g. "+RM 1" adds RM 1 to base price
             BigDecimal surcharge = CartItem.parseAddOnSurcharge(addOns);
             BigDecimal effectivePrice = food.getPrice().add(surcharge);
 
@@ -173,7 +169,12 @@ public class CartServlet extends HttpServlet {
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
         if (cart != null) {
             int foodId = Integer.parseInt(request.getParameter("foodId"));
-            cart.removeIf(item -> item.getFoodId() == foodId);
+            for (int i = cart.size() - 1; i >= 0; i--) {
+                if (cart.get(i).getFoodId() == foodId) {
+                    cart.remove(i);
+                    break;
+                }
+            }
             session.setAttribute("cart", cart.isEmpty() ? null : cart);
             session.setAttribute("cartCount", getCartCount(cart));
             session.setAttribute("cartTotal", getCartTotal(cart));
@@ -189,7 +190,12 @@ public class CartServlet extends HttpServlet {
             int foodId = Integer.parseInt(request.getParameter("foodId"));
             int qty = Integer.parseInt(request.getParameter("quantity"));
             if (qty <= 0) {
-                cart.removeIf(item -> item.getFoodId() == foodId);
+                for (int i = cart.size() - 1; i >= 0; i--) {
+                    if (cart.get(i).getFoodId() == foodId) {
+                        cart.remove(i);
+                        break;
+                    }
+                }
             } else {
                 for (CartItem item : cart) {
                     if (item.getFoodId() == foodId) {
@@ -206,12 +212,18 @@ public class CartServlet extends HttpServlet {
     }
 
     private int getCartCount(List<CartItem> cart) {
-        return cart.stream().mapToInt(CartItem::getQuantity).sum();
+        int count = 0;
+        for (CartItem item : cart) {
+            count += item.getQuantity();
+        }
+        return count;
     }
 
     private BigDecimal getCartTotal(List<CartItem> cart) {
-        return cart.stream()
-                .map(CartItem::getSubtotal)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal total = BigDecimal.ZERO;
+        for (CartItem item : cart) {
+            total = total.add(item.getSubtotal());
+        }
+        return total;
     }
 }

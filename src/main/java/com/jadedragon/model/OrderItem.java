@@ -4,13 +4,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-/**
- * OrderItem entity — maps to "order_items" table.
- * Each OrderItem represents one line item within an order.
- *
- * Demonstrates JPA @Entity + @Transient for calculated/joined fields
- * (foodName is joined, subtotal is calculated as unitPrice × quantity).
- */
+// Maps to "order_items" table
 @Entity
 @Table(name = "order_items")
 public class OrderItem implements Serializable {

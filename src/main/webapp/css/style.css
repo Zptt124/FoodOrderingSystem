@@ -1,6 +1,5 @@
 /* ============================================
-   Jade Dragon Chinese Restaurant
-   Premium Design System
+   Jade Dragon Restaurant - Main Stylesheet
    ============================================ */
 
 /* ---- Google Fonts ---- */
@@ -157,6 +156,26 @@ img {
 }
 
 .navbar .nav-link i { margin-right: 6px; }
+
+.navbar .admin-nav-link {
+    color: var(--gold-light) !important;
+    font-weight: 600;
+}
+
+.navbar .cart-icon { font-size: 1.2rem; }
+
+.navbar .nav-register-btn {
+    border: 2px solid var(--gold) !important;
+    color: var(--gold-dark) !important;
+    border-radius: var(--radius-sm);
+    padding: 0.4rem 1rem !important;
+    font-weight: 600;
+}
+
+.navbar .nav-register-btn:hover {
+    background: var(--gold) !important;
+    color: var(--dark) !important;
+}
 
 /* Cart badge in navbar */
 .cart-badge {
@@ -336,7 +355,7 @@ img {
     position: relative;
     min-height: 85vh;
     background: linear-gradient(135deg, rgba(30,10,10,0.88) 0%, rgba(45,27,46,0.85) 40%, rgba(140,20,40,0.88) 100%),
-                url('https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?w=1200')
+                url('../img/food/peking-duck.jpg')
                 center / cover no-repeat;
     display: flex;
     align-items: center;
@@ -643,7 +662,7 @@ form label, .form-label {
 .auth-page {
     min-height: calc(100vh - 76px);
     background: linear-gradient(135deg, rgba(245,240,235,0.9) 0%, rgba(255,255,255,0.85) 50%, rgba(240,232,220,0.9) 100%),
-                url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80')
+                url('../img/category/chefs-special.jpg')
                 center / cover no-repeat fixed;
     display: flex;
     align-items: center;
@@ -850,7 +869,7 @@ form label, .form-label {
 /* ---- Page Header ---- */
 .page-header {
     background: linear-gradient(135deg, rgba(30,10,10,0.9) 0%, rgba(140,20,40,0.88) 100%),
-                url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200&q=80')
+                url('../img/category/main-course.jpg')
                 center / cover no-repeat;
     padding: 60px 0;
     text-align: center;
@@ -1367,36 +1386,266 @@ form label, .form-label {
     line-height: 1.6;
 }
 
+/* ---- Hero badge ---- */
+.hero-badge {
+    display: inline-block;
+    color: var(--gold-light);
+    letter-spacing: 0.12em;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.hero-main-img {
+    width: 100%;
+    max-height: 450px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+}
+
+/* ---- Category grid (homepage) ---- */
+.category-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+}
+
+.category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 24px;
+    border-radius: var(--radius-md);
+    background: var(--white);
+    border: 2px solid transparent;
+    box-shadow: var(--shadow-xs);
+    transition: all 0.35s var(--ease-out);
+    min-width: 130px;
+    color: var(--gray-700);
+    text-decoration: none;
+    flex: 0 0 auto;
+}
+
+.category-card:hover {
+    border-color: var(--red);
+    box-shadow: var(--shadow-gold);
+    transform: translateY(-4px);
+    color: var(--red);
+}
+
+.category-card span {
+    font-weight: 600;
+    font-size: 0.88rem;
+}
+
+.category-icon-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--cream), var(--white));
+    border: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    overflow: hidden;
+    transition: all 0.35s var(--ease-out);
+    position: relative;
+}
+
+.category-icon-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ---- Popular section ---- */
+.popular-section {
+    background: var(--dark);
+}
+
+.popular-card {
+    background: #2D1B2E;
+    border-color: rgba(212,168,67,0.25);
+}
+
+.popular-card .text-muted {
+    color: rgba(255,255,255,0.55) !important;
+}
+
+.popular-card .food-card-footer {
+    border-top-color: rgba(255,255,255,0.1);
+}
+
+.dark-star {
+    color: rgba(255,255,255,0.2) !important;
+}
+
+.dark-empty {
+    color: rgba(255,255,255,0.2);
+}
+
+/* ---- Star rating ---- */
+.star.filled { color: var(--gold); }
+.star.empty { color: var(--gray-300); }
+
+/* ---- Category link (menu page) ---- */
+.category-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 20px 24px;
+    border-radius: var(--radius-md);
+    background: var(--white);
+    border: 2px solid transparent;
+    box-shadow: var(--shadow-xs);
+    transition: all 0.35s var(--ease-out);
+    min-width: 120px;
+    color: var(--gray-700);
+    text-decoration: none;
+}
+
+.category-link:hover,
+.category-link.active {
+    border-color: var(--red);
+    box-shadow: var(--shadow-gold);
+    transform: translateY(-4px);
+    color: var(--red);
+}
+
+.category-link span:last-child {
+    font-weight: 600;
+    font-size: 0.88rem;
+}
+
+/* ---- Food Detail ---- */
+.food-detail-img {
+    width: 100%;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    max-height: 420px;
+}
+
+.category-badge-label {
+    background: var(--gold);
+    color: var(--dark);
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+}
+
 /* ---- Responsive ---- */
+@media (max-width: 1199px) {
+    .container { max-width: 960px; }
+}
+
 @media (max-width: 991px) {
+    .container { max-width: 720px; }
+
     .section { padding: 50px 0; }
+    .hero { min-height: auto; text-align: center; padding: 60px 0; }
+    .hero h1 { font-size: 2.2rem; }
+    .hero p.lead { margin-inline: auto; font-size: 1rem; }
+    .hero-buttons { justify-content: center; }
+    .hero-content { padding: 30px 0; }
 
     .admin-layout { flex-direction: column; }
     .admin-sidebar { width: 100%; padding: 12px; }
-    .admin-sidebar .nav-link { padding: 10px 16px; }
+    .admin-sidebar .nav-link { padding: 10px 16px; font-size: 0.85rem; }
     .admin-main { padding: 20px; }
 
     .auth-card { padding: 32px 24px; }
-
     .food-card-img { height: 180px; }
+    .food-card-body h5 { font-size: 1rem; }
+
+    .navbar .nav-link { padding: 0.4rem 0.8rem !important; font-size: 0.85rem; }
+
+    .category-card { min-width: 100px; padding: 16px 14px; }
+    .category-icon-circle { width: 56px; height: 56px; font-size: 1.4rem; }
+    .category-card span { font-size: 0.8rem; }
+
+    .about-story { padding: 28px; }
 }
 
-@media (max-width: 768px) {
-    .navbar-brand { font-size: 1.3rem; }
-    .hero h1 { font-size: 2rem; }
-    .hero p.lead { font-size: 1rem; }
+@media (max-width: 767px) {
+    .container { max-width: 540px; }
 
-    .section-title h2 { font-size: 1.6rem; }
-    .food-price { font-size: 1.2rem; }
+    .navbar-brand { font-size: 1.2rem; }
+    .navbar-brand .brand-icon { width: 32px; height: 32px; font-size: 1rem; }
 
-    .category-link { min-width: 90px; padding: 14px 14px; }
-    .category-icon-circle { width: 48px; height: 48px; font-size: 1.3rem; }
+    .hero { padding: 40px 0; }
+    .hero h1 { font-size: 1.8rem; }
+    .hero p.lead { font-size: 0.9rem; }
+    .hero-buttons { flex-direction: column; }
+    .hero-buttons .btn { width: 100%; }
+
+    .section-title h2 { font-size: 1.5rem; }
+    .section-title .subtitle { font-size: 0.85rem; }
+    .food-price { font-size: 1.15rem; }
+    .food-card-img { height: 160px; }
+
+    .category-link { min-width: 70px; padding: 12px 10px; }
+    .category-icon-circle { width: 44px; height: 44px; font-size: 1.1rem; }
+    .category-link span:last-child { font-size: 0.75rem; }
+
+    .category-card { min-width: 80px; padding: 12px 10px; }
+    .category-card span { font-size: 0.75rem; }
+    .category-icon-circle { width: 48px; height: 48px; font-size: 1.2rem; }
 
     .cart-summary { position: static; margin-top: 20px; }
-    .confirmation-card { padding: 32px 20px; }
-    .about-story { padding: 28px; }
+    .cart-table { font-size: 0.85rem; }
+    .cart-table th, .cart-table td { padding: 0.6rem 0.5rem; }
+    .qty-input { width: 50px; }
 
-    .footer { padding: 40px 0 0; }
+    .confirmation-card { padding: 28px 16px; }
+    .about-story { padding: 20px; }
+
+    .auth-card { padding: 24px 16px; }
+
+    .footer { padding: 30px 0 0; }
+    .footer h5 { font-size: 1rem; }
+
+    .admin-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .admin-table thead th { font-size: 0.75rem; padding: 10px 8px; }
+    .admin-table tbody td { font-size: 0.82rem; padding: 10px 8px; }
+
+    .page-header { padding: 36px 0; }
+    .page-header h1 { font-size: 1.6rem; }
+
+    .stat-card { padding: 16px; }
+    .stat-card h3 { font-size: 1.4rem; }
+    .stat-card .stat-icon { width: 44px; height: 44px; font-size: 1.2rem; }
+
+    .btn-lg { padding: 0.7rem 1.4rem; font-size: 0.95rem; }
+    .btn { font-size: 0.85rem; }
+
+    .order-card-header { flex-direction: column; align-items: flex-start; }
+    .order-card-body { padding: 16px; }
+}
+
+@media (max-width: 575px) {
+    .hero h1 { font-size: 1.5rem; }
+    .hero .hero-badge { font-size: 0.75rem; }
+    .food-card-img { height: 140px; }
+    .food-card-body { padding: 14px; }
+    .food-card-body h5 { font-size: 0.95rem; }
+    .food-price { font-size: 1rem; }
+    .food-card-footer { flex-direction: column; align-items: flex-start; gap: 6px; }
+
+    .category-grid { gap: 10px; }
+    .category-card { min-width: 70px; padding: 10px 8px; }
+    .category-icon-circle { width: 40px; height: 40px; }
+    .category-card span { font-size: 0.7rem; }
+
+    .search-bar .form-control { height: 42px; font-size: 0.88rem; }
+
+    .admin-main { padding: 12px; }
+    .admin-sidebar .nav-link { padding: 8px 12px; font-size: 0.8rem; }
 }
 
 /* ---- Animations ---- */
