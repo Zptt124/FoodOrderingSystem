@@ -3,8 +3,8 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ include file="header.jsp" %>
 <%
-    com.jadedragon.model.User sessionUser = (com.jadedragon.model.User) session.getAttribute("user");
-    if (sessionUser == null) { response.sendRedirect("login.jsp"); return; }
+    if (session.getAttribute("user") == null) { response.sendRedirect("login.jsp"); return; }
+    if (request.getAttribute("orders") == null) { response.sendRedirect("OrderServlet"); return; }
 %>
 
 <!-- Page Header -->

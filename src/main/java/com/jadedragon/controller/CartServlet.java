@@ -101,6 +101,15 @@ public class CartServlet extends HttpServlet {
         String action = request.getParameter("action");
         if ("add".equals(action)) {
             addToCart(request, response, session);
+        } else if ("update".equals(action)) {
+            updateItem(request, response);
+        } else if ("remove".equals(action)) {
+            removeItem(request, response);
+        } else if ("clear".equals(action)) {
+            session.setAttribute("cart", null);
+            session.setAttribute("cartCount", 0);
+            session.setAttribute("cartTotal", java.math.BigDecimal.ZERO);
+            response.sendRedirect("cart.jsp");
         } else {
             response.sendRedirect("cart.jsp");
         }
@@ -120,7 +129,7 @@ public class CartServlet extends HttpServlet {
             FoodDAO foodDAO = new FoodDAO();
             FoodItem food = foodDAO.findById(foodId);
             if (food == null || !food.isAvailable()) {
-                response.sendRedirect("menu.jsp?error=unavailable");
+                response.sendRedirect("MenuServlet?error=unavailable");
                 return;
             }
 
@@ -156,10 +165,10 @@ public class CartServlet extends HttpServlet {
             session.setAttribute("cartCount", getCartCount(cart));
             session.setAttribute("cartTotal", getCartTotal(cart));
 
-            response.sendRedirect("menu.jsp?added=" + foodId);
+            response.sendRedirect("MenuServlet?added=" + foodId);
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("menu.jsp?error=add");
+            response.sendRedirect("MenuServlet?error=add");
         }
     }
 

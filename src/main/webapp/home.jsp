@@ -71,11 +71,28 @@
                 </div>
             </c:when>
             <c:otherwise>
-                <div class="empty-state">
-                    <div class="empty-icon"><i class="bi bi-star"></i></div>
-                    <h4>No Featured Dishes</h4>
-                    <p>Check back soon for our chef specials.</p>
-                    <a href="MenuServlet" class="btn btn-primary">Browse Menu</a>
+                <div class="image-carousel">
+                    <div class="carousel-track">
+                        <div class="carousel-slide">
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/spring-rolls.jpg" alt="Spring Rolls"><div class="carousel-label">Spring Rolls</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/dumplings.jpg" alt="Dumplings"><div class="carousel-label">Dumplings</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/kung-pao-chicken.jpg" alt="Kung Pao Chicken"><div class="carousel-label">Kung Pao Chicken</div></div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/peking-duck.jpg" alt="Peking Duck"><div class="carousel-label">Peking Duck</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/mapo-tofu.jpg" alt="Mapo Tofu"><div class="carousel-label">Mapo Tofu</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/sweet-sour-pork.jpg" alt="Sweet & Sour Pork"><div class="carousel-label">Sweet &amp; Sour Pork</div></div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/honey-walnut-shrimp.jpg" alt="Honey Walnut Shrimp"><div class="carousel-label">Honey Walnut Shrimp</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/beef-chow-fun.jpg" alt="Beef Chow Fun"><div class="carousel-label">Beef Chow Fun</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/buddha-soup.jpg" alt="Buddha Jumps Over the Wall"><div class="carousel-label">Buddha Soup</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+                <div style="text-align:center; margin-top: 16px;">
+                    <a href="MenuServlet" class="btn btn-primary">Browse Full Menu</a>
                 </div>
             </c:otherwise>
         </c:choose>
@@ -134,11 +151,28 @@
                 </div>
             </c:when>
             <c:otherwise>
-                <div class="empty-state dark-empty">
-                    <div class="empty-icon"><i class="bi bi-fire"></i></div>
-                    <h4 style="color: var(--white);">No Popular Dishes</h4>
-                    <p>Check back soon for our most-loved dishes.</p>
-                    <a href="MenuServlet" class="btn btn-outline-gold">Browse Menu</a>
+                <div class="image-carousel carousel-dark">
+                    <div class="carousel-track">
+                        <div class="carousel-slide">
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/peking-duck.jpg" alt="Peking Duck"><div class="carousel-label">Peking Duck</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/kung-pao-chicken.jpg" alt="Kung Pao Chicken"><div class="carousel-label">Kung Pao Chicken</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/mapo-tofu.jpg" alt="Mapo Tofu"><div class="carousel-label">Mapo Tofu</div></div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/dumplings.jpg" alt="Dumplings"><div class="carousel-label">Dumplings</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/honey-walnut-shrimp.jpg" alt="Honey Walnut Shrimp"><div class="carousel-label">Honey Walnut Shrimp</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/bubble-tea.jpg" alt="Bubble Tea"><div class="carousel-label">Bubble Tea</div></div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/sesame-balls.jpg" alt="Sesame Balls"><div class="carousel-label">Sesame Balls</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/egg-tarts.jpg" alt="Egg Tarts"><div class="carousel-label">Egg Tarts</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/food/mango-pudding.jpg" alt="Mango Pudding"><div class="carousel-label">Mango Pudding</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+                <div style="text-align:center; margin-top: 16px;">
+                    <a href="MenuServlet" class="btn btn-outline-gold">Browse Full Menu</a>
                 </div>
             </c:otherwise>
         </c:choose>
@@ -170,10 +204,23 @@
                 </div>
             </c:when>
             <c:otherwise>
-                <div class="empty-state">
-                    <div class="empty-icon"><i class="bi bi-collection"></i></div>
-                    <h4>No Categories</h4>
-                    <p>Menu categories are being set up.</p>
+                <div class="image-carousel">
+                    <div class="carousel-track">
+                        <div class="carousel-slide">
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/category/appetizers.jpg" alt="Appetizers"><div class="carousel-label">Appetizers</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/category/main-course.jpg" alt="Main Course"><div class="carousel-label">Main Course</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/category/desserts.jpg" alt="Desserts"><div class="carousel-label">Desserts</div></div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/category/beverages.jpg" alt="Beverages"><div class="carousel-label">Beverages</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/category/chefs-special.jpg" alt="Chef's Special"><div class="carousel-label">Chef's Special</div></div>
+                            <div class="carousel-card"><img src="${pageContext.request.contextPath}/img/category/appetizers.jpg" alt="Appetizers"><div class="carousel-label">Appetizers</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-dots"><span class="dot active"></span><span class="dot"></span></div>
+                <div style="text-align:center; margin-top: 16px;">
+                    <a href="MenuServlet" class="btn btn-primary">Browse Menu</a>
                 </div>
             </c:otherwise>
         </c:choose>

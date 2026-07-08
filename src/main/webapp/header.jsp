@@ -49,7 +49,7 @@
                                 <i class="bi bi-person-circle"></i> ${sessionScope.user.username}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/my-orders.jsp"><i class="bi bi-receipt"></i> My Orders</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/OrderServlet"><i class="bi bi-receipt"></i> My Orders</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/LogoutServlet"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                             </ul>

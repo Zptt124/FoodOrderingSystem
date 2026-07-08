@@ -103,6 +103,57 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // ============ Image Carousel (fade between slides) ============
+    document.querySelectorAll('.image-carousel').forEach(function(carousel) {
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        const dotsContainer = carousel.nextElementSibling;
+        let current = 0;
+        let interval;
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        if (slides.length < 2) {
+            if (slides.length === 1) slides[0].classList.add('active');
+            return;
+        }
+
+        function showSlide(index) {
+            slides.forEach(function(s) { s.classList.remove('active'); });
+            current = ((index % slides.length) + slides.length) % slides.length;
+            slides[current].classList.add('active');
+            if (dotsContainer && dotsContainer.classList.contains('carousel-dots')) {
+                dotsContainer.querySelectorAll('.dot').forEach(function(d, i) {
+                    d.classList.toggle('active', i === current);
+                });
+            }
+        }
+
+        function next() { showSlide(current + 1); }
+
+        showSlide(0);
+        interval = setInterval(next, 3500);
+
+        carousel.addEventListener('mouseenter', function() { clearInterval(interval); });
+        carousel.addEventListener('mouseleave', function() { interval = setInterval(next, 3500); });
+
+        carousel.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].screenX; });
+        carousel.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchEndX < touchStartX - 50) { clearInterval(interval); showSlide(current + 1); interval = setInterval(next, 3500); }
+            if (touchEndX > touchStartX + 50) { clearInterval(interval); showSlide(current - 1); interval = setInterval(next, 3500); }
+        });
+
+        if (dotsContainer && dotsContainer.classList.contains('carousel-dots')) {
+            dotsContainer.querySelectorAll('.dot').forEach(function(dot, i) {
+                dot.addEventListener('click', function() {
+                    clearInterval(interval);
+                    showSlide(i);
+                    interval = setInterval(next, 3500);
+                });
+            });
+        }
+    });
+
     // ============ Cart quantity +/- buttons ============
     document.querySelectorAll('.qty-btn').forEach(btn => {
         btn.addEventListener('click', function () {

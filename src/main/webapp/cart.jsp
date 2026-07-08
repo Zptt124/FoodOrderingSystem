@@ -57,7 +57,6 @@
                                                 </button>
                                                 <input type="number" name="quantity" value="${item.quantity}"
                                                        min="1" max="20" class="form-control form-control-sm qty-input"
-                                                       style="width:55px;text-align:center;font-weight:600;"
                                                        onchange="this.form.submit()">
                                                 <button type="button" class="btn btn-sm btn-outline-secondary qty-inc" style="border-radius:var(--radius-full);width:32px;height:32px;padding:0;line-height:1;">
                                                     <i class="bi bi-plus"></i>
